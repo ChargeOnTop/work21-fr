@@ -1,0 +1,502 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Темная тема (по умолчанию) */
+:root,
+.dark {
+  --color-bg: #0a0a0f;
+  --color-bg-secondary: #06060a;
+  --color-card: #12121a;
+  --color-border: #1e1e2a;
+  --color-text: #e5e5e5;
+  --color-text-secondary: #9ca3af;
+  --color-text-muted: #6b7280;
+  --color-accent-green: #10b981;
+  --color-accent-blue: #3b82f6;
+  --color-accent-violet: #8b5cf6;
+  --glass-bg: rgba(18, 18, 26, 0.8);
+  --glass-border: rgba(30, 30, 42, 0.8);
+  --scrollbar-track: #0a0a0f;
+  --scrollbar-thumb: #1e1e2a;
+  --scrollbar-thumb-hover: #2a2a3a;
+}
+
+/* Светлая тема */
+.light {
+  --color-bg: #f8fafc;
+  --color-bg-secondary: #ffffff;
+  --color-card: #ffffff;
+  --color-border: #e2e8f0;
+  --color-text: #1e293b;
+  --color-text-secondary: #475569;
+  --color-text-muted: #94a3b8;
+  --color-accent-green: #059669;
+  --color-accent-blue: #2563eb;
+  --color-accent-violet: #7c3aed;
+  --glass-bg: rgba(255, 255, 255, 0.9);
+  --glass-border: rgba(226, 232, 240, 0.8);
+  --scrollbar-track: #f1f5f9;
+  --scrollbar-thumb: #cbd5e1;
+  --scrollbar-thumb-hover: #94a3b8;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Кастомный скроллбар */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+/* Сетка на фоне */
+.dark .bg-grid {
+  background-image: 
+    linear-gradient(to right, rgba(30, 30, 42, 0.3) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(30, 30, 42, 0.3) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.light .bg-grid {
+  background-image: 
+    linear-gradient(to right, rgba(226, 232, 240, 0.5) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(226, 232, 240, 0.5) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Градиентные эффекты */
+.gradient-glow {
+  background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(16, 185, 129, 0.15), transparent);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-accent-green), var(--color-accent-blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Стеклянный эффект для карточек */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Анимации появления */
+.animate-delay-100 { animation-delay: 100ms; }
+.animate-delay-200 { animation-delay: 200ms; }
+.animate-delay-300 { animation-delay: 300ms; }
+.animate-delay-400 { animation-delay: 400ms; }
+.animate-delay-500 { animation-delay: 500ms; }
+
+/* Кнопки */
+@layer components {
+  .btn-primary {
+    @apply px-6 py-3 text-white font-semibold rounded-lg transition-all duration-200 hover:shadow-lg;
+    background-color: var(--color-accent-green);
+    --tw-shadow-color: rgba(16, 185, 129, 0.2);
+  }
+  
+  .btn-primary:hover {
+    background-color: #059669;
+  }
+  
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .btn-secondary {
+    @apply px-6 py-3 font-medium rounded-lg border transition-all duration-200;
+    background: var(--color-card);
+    border-color: var(--color-border);
+    color: var(--color-text);
+  }
+  
+  .btn-secondary:hover {
+    background: var(--color-border);
+    border-color: var(--color-border);
+  }
+  
+  .btn-outline {
+    @apply px-6 py-3 bg-transparent font-medium rounded-lg border transition-all duration-200;
+    border-color: var(--color-border);
+    color: var(--color-text);
+  }
+  
+  .btn-outline:hover {
+    background: var(--color-card);
+    border-color: var(--color-accent-green);
+  }
+}
+
+/* Улучшение контрастности кнопок в темной теме */
+.dark button[class*="bg-accent-green"] {
+  background-color: #10b981 !important;
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+.dark button[class*="bg-accent-green"]:hover:not(:disabled) {
+  background-color: #059669 !important;
+}
+
+.dark button[class*="bg-work21-card"] {
+  background-color: #12121a !important;
+  border-color: #1e1e2a !important;
+  color: #e5e5e5 !important;
+}
+
+.dark button[class*="bg-work21-card"]:hover {
+  background-color: #1a1a24 !important;
+  border-color: #2a2a3a !important;
+}
+
+/* Секции */
+.section {
+  @apply py-20 md:py-28 px-4;
+}
+
+.container-lg {
+  @apply max-w-7xl mx-auto;
+}
+
+/* Адаптивные цвета текста для тем */
+@layer utilities {
+  .text-themed {
+    color: var(--color-text);
+  }
+  
+  .text-themed-secondary {
+    color: var(--color-text-secondary);
+  }
+  
+  .text-themed-muted {
+    color: var(--color-text-muted);
+  }
+  
+  .bg-themed {
+    background-color: var(--color-bg);
+  }
+  
+  .bg-themed-card {
+    background-color: var(--color-card);
+  }
+  
+  .border-themed {
+    border-color: var(--color-border);
+  }
+}
+
+/* Исправление белого текста в светлой теме */
+.light .text-white:not(.btn-primary):not([class*="bg-accent"]):not([class*="bg-gradient"]) {
+  color: var(--color-text) !important;
+}
+
+/* Серый текст в светлой теме */
+.light .text-gray-400 {
+  color: var(--color-text-secondary) !important;
+}
+
+.light .text-gray-500 {
+  color: var(--color-text-muted) !important;
+}
+
+.light .text-gray-300 {
+  color: var(--color-text-secondary) !important;
+}
+
+.light .text-gray-600 {
+  color: var(--color-text-muted) !important;
+}
+
+/* Белый текст внутри цветных элементов остаётся белым */
+.light .btn-primary,
+.light [class*="bg-accent-green"]:not(.bg-accent-green\/10):not(.bg-accent-green\/20),
+.light [class*="bg-accent-blue"]:not(.bg-accent-blue\/10):not(.bg-accent-blue\/20),
+.light [class*="bg-gradient"] {
+  color: #ffffff !important;
+}
+
+/* Фоны - темная тема */
+.dark .bg-work21-dark {
+  background-color: #0f0f17 !important;
+}
+
+.dark .bg-work21-card {
+  background-color: #12121a !important;
+}
+
+.dark .bg-work21-dark\/50 {
+  background-color: rgba(15, 15, 23, 0.5) !important;
+}
+
+/* Фоны - светлая тема */
+.light .bg-work21-dark {
+  background-color: var(--color-bg) !important;
+}
+
+.light .bg-work21-card {
+  background-color: var(--color-card) !important;
+}
+
+.light .bg-work21-dark\/50 {
+  background-color: color-mix(in srgb, var(--color-bg) 50%, transparent) !important;
+}
+
+/* Границы - темная тема */
+.dark .border-work21-border {
+  border-color: #1e1e2a !important;
+}
+
+.dark .border-work21-card {
+  border-color: #1e1e2a !important;
+}
+
+/* Границы - светлая тема */
+.light .border-work21-border {
+  border-color: var(--color-border) !important;
+}
+
+.light .border-work21-card {
+  border-color: var(--color-border) !important;
+}
+
+/* Hover состояния в светлой теме */
+.light .hover\:text-white:hover {
+  color: var(--color-text) !important;
+}
+
+.light .hover\:bg-work21-border:hover {
+  background-color: var(--color-border) !important;
+}
+
+.light .hover\:bg-work21-card:hover {
+  background-color: var(--color-card) !important;
+}
+
+/* Placeholder текст - темная тема */
+.dark .placeholder-gray-500::placeholder {
+  color: #6b7280 !important;
+  opacity: 1;
+}
+
+/* Placeholder текст - светлая тема */
+.light .placeholder-gray-500::placeholder {
+  color: var(--color-text-muted) !important;
+  opacity: 1;
+}
+
+/* Input поля - темная тема */
+.dark input[class*="bg-work21"],
+.dark textarea[class*="bg-work21"],
+.dark select[class*="bg-work21"],
+.dark input.bg-work21-dark,
+.dark textarea.bg-work21-dark,
+.dark select.bg-work21-dark {
+  background-color: #0f0f17 !important;
+  border-color: #1e1e2a !important;
+  color: #ffffff !important;
+}
+
+.dark input[class*="bg-work21"]:focus,
+.dark textarea[class*="bg-work21"]:focus,
+.dark select[class*="bg-work21"]:focus,
+.dark input.bg-work21-dark:focus,
+.dark textarea.bg-work21-dark:focus,
+.dark select.bg-work21-dark:focus {
+  border-color: var(--color-accent-green) !important;
+  background-color: #0f0f17 !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
+}
+
+.dark input[class*="bg-work21"]::placeholder,
+.dark textarea[class*="bg-work21"]::placeholder,
+.dark select[class*="bg-work21"]::placeholder,
+.dark input.bg-work21-dark::placeholder,
+.dark textarea.bg-work21-dark::placeholder {
+  color: #6b7280 !important;
+  opacity: 1 !important;
+}
+
+/* Улучшение контрастности для всех input/textarea в темной теме */
+.dark input[type="text"],
+.dark input[type="email"],
+.dark input[type="password"],
+.dark input[type="number"],
+.dark input[type="datetime-local"],
+.dark textarea {
+  background-color: #0f0f17 !important;
+  border-color: #1e1e2a !important;
+  color: #ffffff !important;
+}
+
+.dark input[type="text"]:focus,
+.dark input[type="email"]:focus,
+.dark input[type="password"]:focus,
+.dark input[type="number"]:focus,
+.dark input[type="datetime-local"]:focus,
+.dark textarea:focus {
+  border-color: var(--color-accent-green) !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
+}
+
+/* Input поля - светлая тема */
+.light input,
+.light textarea,
+.light select {
+  background-color: var(--color-bg) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-text) !important;
+}
+
+.light input:focus,
+.light textarea:focus,
+.light select:focus {
+  border-color: var(--color-accent-green) !important;
+}
+
+/* Dropdown/select */
+.light option {
+  background-color: var(--color-card) !important;
+  color: var(--color-text) !important;
+}
+
+/* =================================== */
+/* ИСПРАВЛЕНИЯ ДЛЯ СВЕТЛОЙ ТЕМЫ       */
+/* =================================== */
+
+/* Кнопки с bg-accent-green - всегда белый текст */
+.light button[class*="bg-accent-green"],
+.light .bg-accent-green {
+  background-color: var(--color-accent-green) !important;
+  color: #ffffff !important;
+}
+
+.light button[class*="bg-accent-green"]:hover:not(:disabled) {
+  background-color: #047857 !important;
+}
+
+/* Кнопки выбора роли в светлой теме */
+.light button[class*="border-work21-border"] {
+  border-color: var(--color-border) !important;
+  background-color: var(--color-card) !important;
+}
+
+.light button[class*="border-accent-green"] {
+  border-color: var(--color-accent-green) !important;
+}
+
+.light button[class*="border-accent-blue"] {
+  border-color: var(--color-accent-blue) !important;
+}
+
+/* Текст на кнопках выбора роли */
+.light button .text-white,
+.light button [class*="text-white"] {
+  color: var(--color-text) !important;
+}
+
+/* Но внутри цветных кнопок текст остаётся белым */
+.light button.bg-accent-green .text-white,
+.light button[class*="bg-accent-green"] .text-white,
+.light button.bg-accent-blue .text-white,
+.light button[class*="bg-accent-blue"] .text-white {
+  color: #ffffff !important;
+}
+
+/* Карточки и фоны в светлой теме */
+.light .bg-work21-card {
+  background-color: var(--color-card) !important;
+  border-color: var(--color-border) !important;
+}
+
+/* Заголовки h1, h2 в светлой теме */
+.light h1.text-white,
+.light h2.text-white,
+.light h3.text-white {
+  color: var(--color-text) !important;
+}
+
+/* Span внутри заголовков с акцентным цветом */
+.light h1 .text-accent-green,
+.light h2 .text-accent-green,
+.light span.text-accent-green {
+  color: var(--color-accent-green) !important;
+}
+
+/* Иконки в светлой теме */
+.light .text-gray-400 svg,
+.light svg.text-gray-400,
+.light .text-gray-500 svg,
+.light svg.text-gray-500 {
+  color: var(--color-text-muted) !important;
+}
+
+/* Декоративная панель справа */
+.light .bg-work21-card.border-l {
+  background-color: #f1f5f9 !important;
+  border-color: var(--color-border) !important;
+}
+
+/* Текст в декоративной панели */
+.light .bg-work21-card h2.text-white {
+  color: var(--color-text) !important;
+}
+
+/* Градиентные иконки остаются яркими */
+.light .bg-gradient-to-br {
+  /* Градиент сохраняется */
+}
+
+/* Disabled кнопки */
+.light button:disabled {
+  opacity: 0.5 !important;
+}
+
+/* Ссылки */
+.light a.text-accent-green {
+  color: var(--color-accent-green) !important;
+}
+
+.light a.text-accent-green:hover {
+  text-decoration: underline;
+}
+
+
