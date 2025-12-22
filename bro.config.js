@@ -51,15 +51,15 @@ module.exports = {
   
   /* Фичи — переключатели функционала */
   features: {
-    "features.ai_estimation": true,      // AI оценка проектов (GigaChat)
-    "features.dark_mode": true,          // Переключение тёмной темы
-    "features.registration": true,       // Регистрация новых пользователей
-    "features.new_dashboard": false,     // Новый дизайн дашборда (A/B тест)
-    "features.page_login": true,         // Страница входа
-    "features.page_register": true,      // Страница регистрации
-    "features.page_dashboard": true,     // Страница дашборда
-    "features.page_projects": true,      // Страница проектов
-    "features.page_profile": true,       // Страница профиля
+    "ai_estimation": true,      // AI оценка проектов (GigaChat)
+    "dark_mode": true,          // Переключение тёмной темы
+    "registration": true,       // Регистрация новых пользователей
+    "new_dashboard": false,     // Новый дизайн дашборда (A/B тест)
+    "page_login": true,         // Страница входа
+    "page_register": true,      // Страница регистрации
+    "page_dashboard": true,     // Страница дашборда
+    "page_projects": true,      // Страница проектов
+    "page_profile": true,       // Страница профиля
   },
   
   /* Конфигурация — настройки приложения */
