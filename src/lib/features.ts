@@ -7,10 +7,17 @@
  * 
  * API: getFeatureValue(pkg, featureName, defaultValue)
  */
-import { getFeatureValue } from "@brojs/cli";
+import { getFeatureValue, getFeatures, getAllFeatures as getBroFeatures } from "@brojs/cli";
 
 // Имя пакета из package.json
 const PKG_NAME = "work21-fr";
+
+// DEBUG: Посмотреть что приходит от BroJS
+if (typeof window !== 'undefined') {
+  console.log('[FEATURES DEBUG] window.__BROJS_CONFIG__:', (window as any).__BROJS_CONFIG__);
+  console.log('[FEATURES DEBUG] getFeatures("work21-fr"):', getFeatures(PKG_NAME));
+  console.log('[FEATURES DEBUG] getBroFeatures():', getBroFeatures());
+}
 
 export type FeatureFlag = 
   | 'ai_estimation'
