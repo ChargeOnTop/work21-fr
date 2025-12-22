@@ -5,9 +5,21 @@ import { Link } from 'react-router-dom';
 import { Zap, Mail, Lock, ArrowRight } from 'lucide-react';
 import { useAuth } from '@/lib/auth-context';
 import { ApiError } from '@/lib/api';
+import { isFeatureEnabled } from '@/lib/features';
+import { PageDisabled } from '@/components';
 
 export default function LoginPage() {
   const { login, isLoading } = useAuth();
+  
+  // Проверяем feature flag для страницы входа
+  if (!isFeatureEnabled('page_login')) {
+    return (
+      <PageDisabled
+        title="Вход временно недоступен"
+        message="Страница входа временно отключена. Пожалуйста, попробуйте позже."
+      />
+    );
+  }
   
   const [formData, setFormData] = useState({
     email: '',

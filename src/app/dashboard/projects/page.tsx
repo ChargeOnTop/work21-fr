@@ -4,6 +4,8 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/lib/auth-context';
 import { projectsApi, Project, ApiError } from '@/lib/api';
+import { isFeatureEnabled } from '@/lib/features';
+import { PageDisabled } from '@/components';
 import {
   FolderKanban,
   Clock,
@@ -35,6 +37,16 @@ export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+
+  // Проверяем feature flag для страницы проектов
+  if (!isFeatureEnabled('page_projects')) {
+    return (
+      <PageDisabled
+        title="Проекты недоступны"
+        message="Страница проектов временно отключена. Пожалуйста, попробуйте позже."
+      />
+    );
+  }
 
   const loadProjects = useCallback(async () => {
     if (!user) return;

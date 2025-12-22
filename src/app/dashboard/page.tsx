@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/lib/auth-context';
 import { projectsApi, Project } from '@/lib/api';
+import { isFeatureEnabled } from '@/lib/features';
+import { PageDisabled } from '@/components';
 import {
   FolderKanban,
   Users,
@@ -19,6 +21,17 @@ import {
 
 export default function DashboardPage() {
   const { user } = useAuth();
+
+  // Проверяем feature flag для дашборда
+  if (!isFeatureEnabled('page_dashboard')) {
+    return (
+      <PageDisabled
+        title="Панель управления недоступна"
+        message="Панель управления временно отключена. Пожалуйста, попробуйте позже."
+        showBackButton={false}
+      />
+    );
+  }
 
   if (!user) return null;
 
