@@ -1,8 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 import { ArrowRight, Zap } from 'lucide-react'
+import { isFeatureEnabled } from '@/lib/features'
 
 export default function CTA() {
+  // Если фича отключена - не показываем секцию
+  if (!isFeatureEnabled('cta_section')) {
+    return null;
+  }
+  
   return (
     <section className="section relative overflow-hidden">
       {/* Background Effects */}

@@ -1,8 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 import { ArrowRight, Sparkles, Users, Shield } from 'lucide-react'
+import { isFeatureEnabled } from '@/lib/features'
 
 export default function Hero() {
+  const showStats = isFeatureEnabled('hero_stats');
+  
   return (
     <section className="relative min-h-screen flex items-center pt-16 overflow-hidden">
       {/* Background Effects */}
@@ -45,11 +48,13 @@ export default function Hero() {
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto animate-slide-up animate-delay-300">
-            <StatCard icon={<Users className="w-6 h-6" />} value="9,000+" label="Студентов в сети" />
-            <StatCard icon={<Sparkles className="w-6 h-6" />} value="AI" label="Автоматизация" color="blue" />
-            <StatCard icon={<Shield className="w-6 h-6" />} value="100%" label="Безопасность сделок" color="violet" />
-          </div>
+          {showStats && (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto animate-slide-up animate-delay-300">
+              <StatCard icon={<Users className="w-6 h-6" />} value="9,000+" label="Студентов в сети" />
+              <StatCard icon={<Sparkles className="w-6 h-6" />} value="AI" label="Автоматизация" color="blue" />
+              <StatCard icon={<Shield className="w-6 h-6" />} value="100%" label="Безопасность сделок" color="violet" />
+            </div>
+          )}
         </div>
       </div>
 
