@@ -62,6 +62,9 @@ export function isFeatureEnabled(feature: FeatureFlag): boolean {
     const featureKey = `features.${feature}`;
     const featureData = features?.[featureKey];
     
+    // DEBUG
+    console.log(`[isFeatureEnabled] feature=${feature}, key=${featureKey}, data=`, featureData);
+    
     if (featureData && typeof featureData === 'object') {
       // Структура: {on: boolean, value: string}
       // value может быть "true" или "false" как строка
@@ -69,16 +72,22 @@ export function isFeatureEnabled(feature: FeatureFlag): boolean {
       
       if (typeof value === 'string') {
         const lower = value.toLowerCase().trim();
-        return lower === 'true' || lower === '1' || lower === 'yes' || lower === 'on';
+        const result = lower === 'true' || lower === '1' || lower === 'yes' || lower === 'on';
+        console.log(`[isFeatureEnabled] value="${value}" -> result=${result}`);
+        return result;
       }
       
       if (typeof value === 'boolean') {
+        console.log(`[isFeatureEnabled] value=${value} (boolean)`);
         return value;
       }
     }
+  } else {
+    console.log('[isFeatureEnabled] broModule not available, using default');
   }
   
   // Дефолтное значение если BroJS недоступен
+  console.log(`[isFeatureEnabled] using default: ${DEFAULT_FEATURES[feature]}`);
   return DEFAULT_FEATURES[feature];
 }
 
