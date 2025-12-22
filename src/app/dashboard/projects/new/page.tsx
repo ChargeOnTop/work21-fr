@@ -204,13 +204,17 @@ export default function NewProjectPage() {
       <div className="flex items-center gap-4">
         <Link
           to="/dashboard"
-          className="p-2 rounded-lg bg-work21-card border border-work21-border hover:border-accent-green transition-colors"
+          className="p-2 rounded-lg border hover:border-accent-green transition-colors"
+          style={{ 
+            background: 'var(--color-card)', 
+            borderColor: 'var(--color-border)'
+          }}
         >
-          <ArrowLeft className="w-5 h-5 text-gray-400" />
+          <ArrowLeft className="w-5 h-5" style={{ color: 'var(--color-text-secondary)' }} />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-white">Создать проект</h1>
-          <p className="text-sm text-gray-400">
+          <h1 className="text-2xl font-bold" style={{ color: 'var(--color-text)' }}>Создать проект</h1>
+          <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
             Заполните информацию о проекте, чтобы найти исполнителей
           </p>
         </div>
@@ -240,17 +244,17 @@ export default function NewProjectPage() {
         <div className="glass-card rounded-2xl border border-work21-border p-6 space-y-6">
           {/* Основная информация */}
           <div>
-            <h2 className="text-xl font-semibold text-white mb-2">
+            <h2 className="text-xl font-semibold mb-2" style={{ color: 'var(--color-text)' }}>
               Основная информация
             </h2>
-            <p className="text-sm text-gray-400">
+            <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
               Укажите название и описание вашего проекта
             </p>
           </div>
 
           {/* Title */}
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-sm font-medium mb-2" style={{ color: 'var(--color-text-secondary)' }}>
               Название проекта <span className="text-red-400">*</span>
             </label>
             <input
@@ -260,17 +264,22 @@ export default function NewProjectPage() {
               onChange={handleChange}
               required
               maxLength={255}
-              className="w-full px-4 py-3 rounded-lg bg-work21-dark border border-work21-border text-white placeholder-gray-500 focus:outline-none focus:border-accent-green transition-colors"
+              className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:border-accent-green transition-colors"
+              style={{ 
+                background: 'var(--color-card)', 
+                borderColor: 'var(--color-border)',
+                color: 'var(--color-text)'
+              }}
               placeholder="Например: Мобильное приложение для доставки"
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs mt-1" style={{ color: 'var(--color-text-secondary)' }}>
               {formData.title.length}/255 символов
             </p>
           </div>
 
           {/* Description */}
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-sm font-medium mb-2" style={{ color: 'var(--color-text-secondary)' }}>
               Описание проекта <span className="text-red-400">*</span>
             </label>
             <textarea
@@ -279,14 +288,19 @@ export default function NewProjectPage() {
               onChange={handleChange}
               required
               rows={6}
-              className="w-full px-4 py-3 rounded-lg bg-work21-dark border border-work21-border text-white placeholder-gray-500 focus:outline-none focus:border-accent-green transition-colors resize-none"
+              className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:border-accent-green transition-colors resize-none"
+              style={{ 
+                background: 'var(--color-card)', 
+                borderColor: 'var(--color-border)',
+                color: 'var(--color-text)'
+              }}
               placeholder="Подробно опишите, что нужно сделать. Чем детальнее, тем лучше исполнители поймут задачу."
             />
           </div>
 
           {/* Requirements */}
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-sm font-medium mb-2" style={{ color: 'var(--color-text-secondary)' }}>
               Требования
             </label>
             <textarea
@@ -294,7 +308,12 @@ export default function NewProjectPage() {
               value={formData.requirements}
               onChange={handleChange}
               rows={4}
-              className="w-full px-4 py-3 rounded-lg bg-work21-dark border border-work21-border text-white placeholder-gray-500 focus:outline-none focus:border-accent-green transition-colors resize-none"
+              className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:border-accent-green transition-colors resize-none"
+              style={{ 
+                background: 'var(--color-card)', 
+                borderColor: 'var(--color-border)',
+                color: 'var(--color-text)'
+              }}
               placeholder="Дополнительные требования: платформы, интеграции, особенности..."
             />
           </div>
@@ -303,10 +322,10 @@ export default function NewProjectPage() {
         {/* Детали проекта */}
         <div className="glass-card rounded-2xl border border-work21-border p-6 space-y-6">
           <div>
-            <h2 className="text-xl font-semibold text-white mb-2">
+            <h2 className="text-xl font-semibold mb-2" style={{ color: 'var(--color-text)' }}>
               Детали проекта
             </h2>
-            <p className="text-sm text-gray-400">
+            <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
               Укажите бюджет, сроки и технологии
             </p>
           </div>
@@ -314,7 +333,7 @@ export default function NewProjectPage() {
           {/* AI Estimation Button - показываем только если фича включена */}
           {isAiEstimationEnabled ? (
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
+              <label className="block text-sm font-medium mb-2 flex items-center gap-2" style={{ color: 'var(--color-text-secondary)' }}>
                 <Sparkles className="w-4 h-4 text-accent-violet" />
                 Оценка времени выполнения
               </label>
@@ -322,7 +341,7 @@ export default function NewProjectPage() {
                 type="button"
                 onClick={handleEstimate}
                 disabled={isEstimating || !formData.description.trim()}
-                className="w-full px-6 py-4 rounded-lg bg-gradient-to-r from-accent-violet to-accent-blue border-2 border-accent-violet/50 text-white hover:from-accent-violet/90 hover:to-accent-blue/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 font-semibold shadow-lg shadow-accent-violet/20 hover:shadow-accent-violet/40"
+                className="w-full px-6 py-4 rounded-lg bg-gradient-to-r from-violet-600 to-blue-600 border-2 border-violet-500/50 text-white hover:from-violet-700 hover:to-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 font-semibold shadow-lg shadow-violet-500/20 hover:shadow-violet-500/40"
               >
                 {isEstimating ? (
                   <>
@@ -361,7 +380,7 @@ export default function NewProjectPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Budget */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium mb-2" style={{ color: 'var(--color-text-secondary)' }}>
                 Бюджет (₽) <span className="text-red-400">*</span>
                 {formData.budget && estimationResult && (
                   <span className="ml-2 text-xs text-accent-green">
@@ -377,14 +396,19 @@ export default function NewProjectPage() {
                 required
                 min="1"
                 step="0.01"
-                className="w-full px-4 py-3 rounded-lg bg-work21-dark border border-work21-border text-white placeholder-gray-500 focus:outline-none focus:border-accent-green transition-colors"
+                className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:border-accent-green transition-colors"
+                style={{ 
+                  background: 'var(--color-card)', 
+                  borderColor: 'var(--color-border)',
+                  color: 'var(--color-text)'
+                }}
                 placeholder="150000"
               />
             </div>
 
             {/* Deadline */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium mb-2" style={{ color: 'var(--color-text-secondary)' }}>
                 Срок выполнения
               </label>
               <input
@@ -392,7 +416,12 @@ export default function NewProjectPage() {
                 name="deadline"
                 value={formData.deadline}
                 onChange={handleChange}
-                className="w-full px-4 py-3 rounded-lg bg-work21-dark border border-work21-border text-white placeholder-gray-500 focus:outline-none focus:border-accent-green transition-colors"
+                className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:border-accent-green transition-colors"
+                style={{ 
+                  background: 'var(--color-card)', 
+                  borderColor: 'var(--color-border)',
+                  color: 'var(--color-text)'
+                }}
               />
             </div>
           </div>
@@ -412,7 +441,7 @@ export default function NewProjectPage() {
 
           {/* Tech Stack */}
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-sm font-medium mb-2" style={{ color: 'var(--color-text-secondary)' }}>
               Технологии
             </label>
             <div className="flex gap-2 mb-3">
@@ -421,13 +450,18 @@ export default function NewProjectPage() {
                 value={techStackInput}
                 onChange={(e) => setTechStackInput(e.target.value)}
                 onKeyPress={handleKeyPress}
-                className="flex-1 px-4 py-2 rounded-lg bg-work21-dark border border-work21-border text-white placeholder-gray-500 focus:outline-none focus:border-accent-green transition-colors"
+                className="flex-1 px-4 py-2 rounded-lg border focus:outline-none focus:border-accent-green transition-colors"
+                style={{ 
+                  background: 'var(--color-card)', 
+                  borderColor: 'var(--color-border)',
+                  color: 'var(--color-text)'
+                }}
                 placeholder="Например: React, Python, PostgreSQL"
               />
               <button
                 type="button"
                 onClick={handleAddTechStack}
-                className="px-4 py-2 rounded-lg bg-accent-green/10 border border-accent-green/30 text-accent-green hover:bg-accent-green/20 transition-colors"
+                className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-medium transition-colors"
               >
                 Добавить
               </button>
@@ -460,14 +494,19 @@ export default function NewProjectPage() {
         <div className="flex items-center justify-end gap-4">
           <Link
             to="/dashboard"
-            className="px-6 py-3 rounded-lg bg-work21-card border border-work21-border text-white hover:bg-work21-dark hover:border-accent-green/50 transition-colors"
+            className="px-6 py-3 rounded-lg border transition-colors"
+            style={{ 
+              background: 'var(--color-card)', 
+              borderColor: 'var(--color-border)',
+              color: 'var(--color-text)'
+            }}
           >
             Отмена
           </Link>
           <button
             type="submit"
             disabled={isSubmitting || success}
-            className="px-6 py-3 rounded-lg bg-accent-green text-white hover:bg-accent-green/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            className="px-6 py-3 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
           >
             {isSubmitting ? (
               <>
