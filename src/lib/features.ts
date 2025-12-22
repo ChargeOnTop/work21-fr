@@ -29,18 +29,46 @@ const DEFAULT_FEATURES: Record<FeatureFlag, boolean> = {
  * @returns true если фича включена
  */
 export function isFeatureEnabled(feature: FeatureFlag): boolean {
-  const configValue = getConfigValue(`work21-fr.features.${feature}`);
+  // Пробуем разные форматы ключей
+  const key1 = `work21-fr.features.${feature}`;
+  const key2 = `features.${feature}`;
+  
+  let configValue = getConfigValue(key1);
+  
+  // Если не нашли с префиксом, пробуем без
+  if (configValue === undefined || configValue === null) {
+    configValue = getConfigValue(key2);
+  }
+  
+  // Отладка (можно убрать в продакшене)
+  if (typeof window !== 'undefined' && (window as any).__FEATURE_DEBUG__) {
+    console.log(`[Feature] ${feature}:`, { key1, key2, configValue, type: typeof configValue });
+  }
   
   // Если значение не задано в конфиге, используем дефолтное
-  if (configValue === undefined || configValue === null) {
+  if (configValue === undefined || configValue === null || configValue === '') {
     return DEFAULT_FEATURES[feature];
+  }
+  
+  // Обрабатываем boolean
+  if (typeof configValue === 'boolean') {
+    return configValue;
   }
   
   // Преобразуем строку в boolean
   if (typeof configValue === 'string') {
-    return configValue.toLowerCase() === 'true' || configValue === '1';
+    const lower = configValue.toLowerCase().trim();
+    // false, 0, "false", "0", "no", "off" = выключено
+    if (lower === 'false' || lower === '0' || lower === 'no' || lower === 'off') {
+      return false;
+    }
+    // true, 1, "true", "1", "yes", "on" = включено
+    if (lower === 'true' || lower === '1' || lower === 'yes' || lower === 'on') {
+      return true;
+    }
   }
   
+  // Fallback
   return Boolean(configValue);
 }
 
@@ -55,6 +83,18 @@ export function getAllFeatures(): Record<FeatureFlag, boolean> {
     registration: isFeatureEnabled('registration'),
     new_dashboard: isFeatureEnabled('new_dashboard'),
   };
+}
+
+/**
+ * Включить отладку feature flags в консоли браузера
+ * Вызовите в консоли: window.__FEATURE_DEBUG__ = true
+ * Затем перезагрузите страницу
+ */
+export function enableFeatureDebug(): void {
+  if (typeof window !== 'undefined') {
+    (window as any).__FEATURE_DEBUG__ = true;
+    console.log('[Feature] Debug enabled. Reload the page to see logs.');
+  }
 }
 
 /**
@@ -74,4 +114,3 @@ export interface FeatureGateProps {
 }
 
 // Примечание: FeatureGate компонент определён в components/FeatureGate.tsx
-
