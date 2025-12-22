@@ -2,10 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Loader2, AlertCircle, CheckCircle2, Clock, Sparkles } from 'lucide-react';
+import { ArrowLeft, Loader2, AlertCircle, CheckCircle2, Clock, Sparkles, AlertTriangle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/lib/auth-context';
 import { projectsApi, estimatorApi, ApiError } from '@/lib/api';
+import { isFeatureEnabled } from '@/lib/features';
 
 interface ProjectFormData {
   title: string;
@@ -20,6 +21,10 @@ interface ProjectFormData {
 export default function NewProjectPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  
+  // Feature flags
+  const isAiEstimationEnabled = isFeatureEnabled('ai_estimation');
+  
   const [formData, setFormData] = useState<ProjectFormData>({
     title: '',
     description: '',
@@ -78,7 +83,7 @@ export default function NewProjectPage() {
 
   const handleEstimate = async () => {
     if (!formData.description.trim()) {
-      setEstimationError('Сначала заполните описание проекта');
+      setEstimationError('Необходимо заполнить описание проекта');
       return;
     }
 
@@ -96,7 +101,7 @@ export default function NewProjectPage() {
         // Если есть структурированная оценка, используем её
         if (response.estimation) {
           setEstimationResult(response.estimation.data);
-          // Автоподстановка стоимости в поле budget (используем price из верхнего уровня или из estimation)
+          // Автозаполняем поле budget (используем price из верхнего уровня или из estimation)
           const price = response.price || response.estimation.price;
           if (price) {
             setFormData({ 
@@ -116,7 +121,7 @@ export default function NewProjectPage() {
             budget: response.price.toString()
           });
         } else {
-          // Fallback на старый формат (если JSON не распарсился)
+          // Fallback на простой формат (если JSON не распарсился)
           setEstimationResult(responseContent);
           setFormData({ ...formData, llm_estimation: responseContent });
         }
@@ -127,9 +132,9 @@ export default function NewProjectPage() {
       if (err instanceof ApiError) {
         setEstimationError(err.message);
       } else {
-        setEstimationError('Ошибка при расчете времени выполнения');
+        setEstimationError('Ошибка при оценке времени выполнения');
       }
-      console.error('Ошибка расчета времени:', err);
+      console.error('Ошибка оценки времени:', err);
     } finally {
       setIsEstimating(false);
     }
@@ -174,7 +179,7 @@ export default function NewProjectPage() {
       
       setSuccess(true);
       
-      // Редирект на главную страницу дашборда через 1.5 секунды
+      // Редирект на страницу проектов через 1.5 секунды
       setTimeout(() => {
         navigate('/dashboard');
       }, 1500);
@@ -217,7 +222,7 @@ export default function NewProjectPage() {
           <CheckCircle2 className="w-5 h-5 text-accent-green flex-shrink-0" />
           <div>
             <p className="text-accent-green font-medium">Проект успешно создан!</p>
-            <p className="text-sm text-gray-400">Перенаправление на страницу проекта...</p>
+            <p className="text-sm text-gray-400">Перенаправляем на страницу проектов...</p>
           </div>
         </div>
       )}
@@ -275,7 +280,7 @@ export default function NewProjectPage() {
               required
               rows={6}
               className="w-full px-4 py-3 rounded-lg bg-work21-dark border border-work21-border text-white placeholder-gray-500 focus:outline-none focus:border-accent-green transition-colors resize-none"
-              placeholder="Подробно опишите, что нужно сделать. Чем больше деталей, тем лучше исполнители поймут задачу."
+              placeholder="Подробно опишите, что нужно сделать. Чем детальнее, тем лучше исполнители поймут задачу."
             />
           </div>
 
@@ -306,48 +311,61 @@ export default function NewProjectPage() {
             </p>
           </div>
 
-          {/* Estimate Button - Prominent */}
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-accent-violet" />
-              Оценка времени выполнения
-            </label>
-            <button
-              type="button"
-              onClick={handleEstimate}
-              disabled={isEstimating || !formData.description.trim()}
-              className="w-full px-6 py-4 rounded-lg bg-gradient-to-r from-accent-violet to-accent-blue border-2 border-accent-violet/50 text-white hover:from-accent-violet/90 hover:to-accent-blue/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 font-semibold shadow-lg shadow-accent-violet/20 hover:shadow-accent-violet/40"
-            >
-              {isEstimating ? (
-                <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  <span>Расчет времени выполнения...</span>
-                </>
-              ) : (
-                <>
-                  <Sparkles className="w-5 h-5" />
-                  <span>Рассчитать оценку времени выполнения</span>
-                </>
+          {/* AI Estimation Button - показываем только если фича включена */}
+          {isAiEstimationEnabled ? (
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-accent-violet" />
+                Оценка времени выполнения
+              </label>
+              <button
+                type="button"
+                onClick={handleEstimate}
+                disabled={isEstimating || !formData.description.trim()}
+                className="w-full px-6 py-4 rounded-lg bg-gradient-to-r from-accent-violet to-accent-blue border-2 border-accent-violet/50 text-white hover:from-accent-violet/90 hover:to-accent-blue/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 font-semibold shadow-lg shadow-accent-violet/20 hover:shadow-accent-violet/40"
+              >
+                {isEstimating ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    <span>Идёт оценка времени выполнения...</span>
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-5 h-5" />
+                    <span>Рассчитать оценку времени выполнения</span>
+                  </>
+                )}
+              </button>
+              
+              {/* Estimation Error */}
+              {estimationError && (
+                <div className="mt-3 p-3 rounded-lg bg-red-500/10 border border-red-500/30 flex items-start gap-2">
+                  <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
+                  <div className="text-xs text-red-400">{estimationError}</div>
+                </div>
               )}
-            </button>
-            
-            {/* Estimation Error */}
-            {estimationError && (
-              <div className="mt-3 p-3 rounded-lg bg-red-500/10 border border-red-500/30 flex items-start gap-2">
-                <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
-                <div className="text-xs text-red-400">{estimationError}</div>
+            </div>
+          ) : (
+            <div className="p-4 rounded-lg bg-yellow-500/10 border border-yellow-500/30 flex items-start gap-3">
+              <AlertTriangle className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="text-yellow-500 font-medium text-sm">AI-оценка временно недоступна</p>
+                <p className="text-xs text-gray-400 mt-1">
+                  Функция автоматической оценки времени выполнения временно отключена. 
+                  Укажите бюджет вручную.
+                </p>
               </div>
-            )}
-          </div>
+            </div>
+          )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Budget */}
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Бюджет (₽) <span className="text-red-400">*</span>
-                {formData.budget && (
+                {formData.budget && estimationResult && (
                   <span className="ml-2 text-xs text-accent-green">
-                    (автоматически рассчитано)
+                    (автозаполнено)
                   </span>
                 )}
               </label>
@@ -384,7 +402,7 @@ export default function NewProjectPage() {
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
                 <Clock className="w-4 h-4 text-accent-violet" />
-                Оценка времени выполнения от LLM
+                Оценка времени выполнения от AI
               </label>
               <div className="px-4 py-4 rounded-lg bg-accent-violet/10 border border-accent-violet/30 text-gray-300 whitespace-pre-wrap text-sm max-h-96 overflow-y-auto">
                 {estimationResult}
@@ -465,4 +483,3 @@ export default function NewProjectPage() {
     </div>
   );
 }
-

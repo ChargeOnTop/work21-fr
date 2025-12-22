@@ -3,9 +3,18 @@
 import React from 'react';
 import { Sun, Moon } from 'lucide-react';
 import { useTheme } from '@/lib/theme-context';
+import { isFeatureEnabled } from '@/lib/features';
 
 export default function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
+  
+  // Проверяем feature flag для тёмной темы
+  const isDarkModeEnabled = isFeatureEnabled('dark_mode');
+  
+  // Если переключение темы отключено - не показываем кнопку
+  if (!isDarkModeEnabled) {
+    return null;
+  }
 
   return (
     <button
@@ -50,4 +59,3 @@ export default function ThemeToggle() {
     </button>
   );
 }
-

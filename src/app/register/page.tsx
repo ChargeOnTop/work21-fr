@@ -2,9 +2,10 @@
 
 import React, { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { Zap, User, Mail, Lock, ArrowRight, GraduationCap, Building2 } from 'lucide-react';
+import { Zap, User, Mail, Lock, ArrowRight, GraduationCap, Building2, AlertTriangle } from 'lucide-react';
 import { useAuth } from '@/lib/auth-context';
 import { ApiError } from '@/lib/api';
+import { isFeatureEnabled } from '@/lib/features';
 
 type UserRole = 'student' | 'customer';
 
@@ -13,7 +14,10 @@ export default function RegisterPage() {
   const [searchParams] = useSearchParams();
   const { register, isLoading } = useAuth();
   
-  // Получаем роль из URL параметра
+  // Проверяем feature flag для регистрации
+  const isRegistrationEnabled = isFeatureEnabled('registration');
+  
+  // Получаем роль из URL параметров
   const initialRole = (searchParams.get('role') as UserRole) || 'student';
   
   const [formData, setFormData] = useState({
@@ -68,9 +72,36 @@ export default function RegisterPage() {
     }
   };
 
+  // Если регистрация отключена - показываем заглушку
+  if (!isRegistrationEnabled) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-8">
+        <div className="w-full max-w-md text-center">
+          <div className="w-20 h-20 rounded-2xl bg-yellow-500/20 flex items-center justify-center mx-auto mb-6">
+            <AlertTriangle className="w-10 h-10 text-yellow-500" />
+          </div>
+          <h1 className="text-2xl font-bold text-white mb-4">
+            Регистрация временно недоступна
+          </h1>
+          <p className="text-gray-400 mb-8">
+            В данный момент регистрация новых пользователей приостановлена. 
+            Пожалуйста, попробуйте позже или свяжитесь с администратором.
+          </p>
+          <Link 
+            to="/login" 
+            className="inline-flex items-center gap-2 px-6 py-3 bg-accent-green hover:bg-accent-green-dark text-white font-semibold rounded-lg transition-colors"
+          >
+            Войти в аккаунт
+            <ArrowRight className="w-5 h-5" />
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex">
-      {/* Левая часть - форма */}
+      {/* Левая часть - Форма */}
       <div className="flex-1 flex items-center justify-center p-8">
         <div className="w-full max-w-md">
           {/* Logo */}
@@ -261,7 +292,7 @@ export default function RegisterPage() {
         </div>
       </div>
 
-      {/* Правая часть - декоративная */}
+      {/* Правая часть - Информация */}
       <div className="hidden lg:flex flex-1 bg-work21-card border-l border-work21-border items-center justify-center p-12">
         <div className="max-w-md text-center">
           <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-accent-green to-accent-blue flex items-center justify-center mx-auto mb-8">
@@ -270,13 +301,13 @@ export default function RegisterPage() {
           <h2 className="text-2xl font-bold text-white mb-4">
             {formData.role === 'student' 
               ? 'Начните зарабатывать на своих навыках'
-              : 'Найдите талантливых разработчиков'
+              : 'Найдите талантливых исполнителей'
             }
           </h2>
           <p className="text-gray-400">
             {formData.role === 'student'
               ? 'Получайте реальный опыт, работая над коммерческими проектами. Стройте портфолио и карьеру.'
-              : 'Более 9000 студентов Школы 21 готовы взяться за ваш проект. Быстро, качественно, безопасно.'
+              : 'Более 9000 студентов готовы взяться за ваш проект. Качество, доступность, эффективность.'
             }
           </p>
         </div>
@@ -284,5 +315,3 @@ export default function RegisterPage() {
     </div>
   );
 }
-
-

@@ -29,9 +29,11 @@ work21-fr/
 │   ├── components/             # React компоненты
 │   │   ├── Header.tsx
 │   │   ├── Footer.tsx
+│   │   ├── FeatureGate.tsx     # Условный рендеринг по feature flags
 │   │   └── AIAgents.tsx
 │   ├── lib/
-│   │   └── api.ts              # API клиент
+│   │   ├── api.ts              # API клиент
+│   │   └── features.ts         # Feature flags
 │   └── styles/
 │       └── globals.css         # Глобальные стили
 ├── public/                     # Статические файлы
@@ -53,16 +55,60 @@ npm start
 npm run build
 ```
 
-## Конфигурация BroJS
+## Feature Flags
 
-Файл `bro.config.js`:
-```javascript
-module.exports = {
-  name: 'work21-fr',
-  base: '/work21-fr',
-  // ...
-};
+Управление функционалом через BroJS админку без изменения кода.
+
+### Доступные флаги
+
+| Флаг | Описание | По умолчанию |
+|------|----------|--------------|
+| `ai_estimation` | AI оценка проектов (GigaChat) | `true` |
+| `dark_mode` | Переключение тёмной темы | `true` |
+| `registration` | Регистрация новых пользователей | `true` |
+| `new_dashboard` | Новый дизайн дашборда (A/B тест) | `false` |
+
+### Настройка в BroJS админке
+
+В админке (https://admin.brojs.ru) добавьте ключи:
+
+| Ключ | Значение |
+|------|----------|
+| `features.ai_estimation` | `true` или `false` |
+| `features.dark_mode` | `true` или `false` |
+| `features.registration` | `true` или `false` |
+| `features.new_dashboard` | `true` или `false` |
+
+### Использование в коде
+
+```typescript
+import { isFeatureEnabled } from '@/lib/features';
+import { FeatureGate } from '@/components';
+
+// Проверка флага
+if (isFeatureEnabled('ai_estimation')) {
+  // Показать AI оценку
+}
+
+// Компонент-обёртка
+<FeatureGate feature="registration" fallback={<p>Регистрация недоступна</p>}>
+  <RegisterForm />
+</FeatureGate>
 ```
+
+## BroJS Админка
+
+**URL:** https://admin.brojs.ru
+
+### Настройки приложения `work21-fr`
+
+| Ключ | Значение | Описание |
+|------|----------|----------|
+| `api` | `https://api.work-21.com` | Backend API |
+| `api.estimator` | `https://api.work-21.com/agent` | AI Agent API |
+| `features.ai_estimation` | `true` | AI оценка |
+| `features.dark_mode` | `true` | Тёмная тема |
+| `features.registration` | `true` | Регистрация |
 
 ## API клиент
 
@@ -79,17 +125,6 @@ export const usersApi = { getMe, updateMe };
 export const projectsApi = { create, getList, apply };
 export const estimatorApi = { estimate, estimateFull };
 ```
-
-## BroJS Админка
-
-**URL:** https://admin.brojs.ru
-
-### Настройки приложения `work21-fr`
-
-| Ключ | Значение | Описание |
-|------|----------|----------|
-| `api` | `https://api.work-21.com` | Backend API |
-| `api.estimator` | `https://api.work-21.com/agent` | AI Agent API |
 
 ## Роутинг
 
@@ -120,10 +155,16 @@ html.dark { /* тёмная тема */ }
 html:not(.dark) { /* светлая тема */ }
 ```
 
+**Примечание:** Переключатель темы скрывается если `features.dark_mode = false`.
+
 ## Важные компоненты
+
+### FeatureGate.tsx
+Компонент для условного рендеринга на основе feature flags.
 
 ### AIAgents.tsx
 Компонент для AI-оценки проекта. Вызывает `estimatorApi.estimateFull()`.
+Скрывается если `features.ai_estimation = false`.
 
 ### Dashboard
 Личный кабинет с разным функционалом для ролей:
@@ -140,4 +181,3 @@ html:not(.dark) { /* светлая тема */ }
 
 - **URL:** https://ift-1.brojs.ru/work21-fr
 - **Static:** https://static.brojs.ru/work21-fr/
-
