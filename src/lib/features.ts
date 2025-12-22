@@ -1,23 +1,14 @@
 /**
  * Feature Flags для WORK21
  * 
- * Настройка:
- *   1. В bro.config.js → секция features["work21-fr"]
- *   2. В BroJS админке → вкладка "Фичи"
+ * Настройка в BroJS админке → вкладка "Фичи"
  * 
- * API: getFeatureValue(pkg, featureName, defaultValue)
+ * Формат в BroJS:
+ *   features["work21-fr"]["features.dark_mode"] = {on: true, value: "false"}
  */
-import { getFeatureValue, getFeatures, getAllFeatures as getBroFeatures } from "@brojs/cli";
 
 // Имя пакета из package.json
 const PKG_NAME = "work21-fr";
-
-// DEBUG: Посмотреть что приходит от BroJS
-if (typeof window !== 'undefined') {
-  console.log('[FEATURES DEBUG] window.__BROJS_CONFIG__:', (window as any).__BROJS_CONFIG__);
-  console.log('[FEATURES DEBUG] getFeatures("work21-fr"):', getFeatures(PKG_NAME));
-  console.log('[FEATURES DEBUG] getBroFeatures():', getBroFeatures());
-}
 
 export type FeatureFlag = 
   | 'ai_estimation'
@@ -43,26 +34,52 @@ const DEFAULT_FEATURES: Record<FeatureFlag, boolean> = {
 };
 
 /**
+ * Получить модуль BroJS через System.get
+ */
+function getBroModule(): any {
+  if (typeof window === 'undefined') return null;
+  try {
+    if (typeof (window as any).System !== 'undefined') {
+      return (window as any).System.get('https://brojs.ru/virtual-module.js');
+    }
+  } catch {
+    // ignore
+  }
+  return null;
+}
+
+/**
  * Проверить, включена ли фича
- * Использует getFeatureValue(pkg, featureName, defaultValue) из @brojs/cli
+ * Читает из BroJS админки через System.get
  */
 export function isFeatureEnabled(feature: FeatureFlag): boolean {
-  // getFeatureValue(pkg, featureName, defaultValue)
-  // Возвращает features[pkg][featureName] ?? defaultValue
-  const value = getFeatureValue(PKG_NAME, feature, DEFAULT_FEATURES[feature]);
+  const broModule = getBroModule();
   
-  // Boolean
-  if (typeof value === 'boolean') {
-    return value;
+  if (broModule && broModule.getFeatures) {
+    const features = broModule.getFeatures(PKG_NAME);
+    
+    // Ключ в формате "features.dark_mode"
+    const featureKey = `features.${feature}`;
+    const featureData = features?.[featureKey];
+    
+    if (featureData && typeof featureData === 'object') {
+      // Структура: {on: boolean, value: string}
+      // value может быть "true" или "false" как строка
+      const value = featureData.value;
+      
+      if (typeof value === 'string') {
+        const lower = value.toLowerCase().trim();
+        return lower === 'true' || lower === '1' || lower === 'yes' || lower === 'on';
+      }
+      
+      if (typeof value === 'boolean') {
+        return value;
+      }
+    }
   }
   
-  // String -> Boolean
-  if (typeof value === 'string') {
-    const lower = value.toLowerCase().trim();
-    return !(lower === 'false' || lower === '0' || lower === 'no' || lower === 'off');
-  }
-  
-  return Boolean(value);
+  // Дефолтное значение если BroJS недоступен
+  return DEFAULT_FEATURES[feature];
 }
 
 export function getAllFeatures(): Record<FeatureFlag, boolean> {
