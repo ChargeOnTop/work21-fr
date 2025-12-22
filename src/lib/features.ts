@@ -1,8 +1,6 @@
 /**
  * Feature Flags для WORK21
- * Управление функционалом через BroJS админку (раздел "Фичи")
- * 
- * Используем getFeatureValue для чтения фичей из раздела "Фичи" админки
+ * Управление функционалом через BroJS админку
  */
 import { getFeatureValue, getConfigValue } from "@brojs/cli";
 
@@ -10,18 +8,18 @@ import { getFeatureValue, getConfigValue } from "@brojs/cli";
  * Доступные feature flags
  */
 export type FeatureFlag = 
-  | 'ai_estimation'    // AI оценка проектов (GigaChat)
-  | 'dark_mode'        // Тёмная тема
-  | 'registration'     // Регистрация новых пользователей
-  | 'new_dashboard'    // Новый дизайн дашборда
-  | 'page_login'       // Страница входа
-  | 'page_register'    // Страница регистрации
-  | 'page_dashboard'   // Страница дашборда
-  | 'page_projects'    // Страница проектов
-  | 'page_profile';    // Страница профиля
+  | 'ai_estimation'
+  | 'dark_mode'
+  | 'registration'
+  | 'new_dashboard'
+  | 'page_login'
+  | 'page_register'
+  | 'page_dashboard'
+  | 'page_projects'
+  | 'page_profile';
 
 /**
- * Значения по умолчанию для фичей
+ * Значения по умолчанию
  */
 const DEFAULT_FEATURES: Record<FeatureFlag, boolean> = {
   ai_estimation: true,
@@ -37,35 +35,61 @@ const DEFAULT_FEATURES: Record<FeatureFlag, boolean> = {
 
 /**
  * Проверить, включена ли фича
- * Использует getFeatureValue из @brojs/cli для раздела "Фичи" в админке
- * 
- * @param feature - название фичи (ключ в админке: features.{feature})
- * @returns true если фича включена
  */
 export function isFeatureEnabled(feature: FeatureFlag): boolean {
-  // Используем getFeatureValue для чтения из раздела "Фичи"
-  const featureKey = `features.${feature}`;
-  let featureValue = getFeatureValue(featureKey);
+  // Пробуем разные варианты ключей
+  const keys = [
+    `features.${feature}`,
+    feature,
+    `work21-fr.features.${feature}`,
+    `work21-fr.${feature}`,
+  ];
   
-  // Fallback на getConfigValue если getFeatureValue не нашёл
-  if (featureValue === undefined || featureValue === null) {
-    const configKey = `work21-fr.features.${feature}`;
-    featureValue = getConfigValue(configKey);
+  let value: any = undefined;
+  let usedKey = '';
+  
+  // Пробуем getFeatureValue
+  for (const key of keys) {
+    const v = getFeatureValue(key);
+    if (v !== undefined && v !== null) {
+      value = v;
+      usedKey = `getFeatureValue("${key}")`;
+      break;
+    }
   }
   
-  // Если значение не задано, используем дефолтное
-  if (featureValue === undefined || featureValue === null || featureValue === '') {
+  // Если не нашли через getFeatureValue, пробуем getConfigValue
+  if (value === undefined || value === null) {
+    for (const key of keys) {
+      const v = getConfigValue(key);
+      if (v !== undefined && v !== null) {
+        value = v;
+        usedKey = `getConfigValue("${key}")`;
+        break;
+      }
+    }
+  }
+  
+  // Логируем для отладки
+  console.log(`[Feature] ${feature}:`, {
+    value,
+    type: typeof value,
+    usedKey: usedKey || 'DEFAULT',
+  });
+  
+  // Если не нашли - используем дефолт
+  if (value === undefined || value === null || value === '') {
     return DEFAULT_FEATURES[feature];
   }
   
-  // Обрабатываем boolean
-  if (typeof featureValue === 'boolean') {
-    return featureValue;
+  // Boolean
+  if (typeof value === 'boolean') {
+    return value;
   }
   
-  // Преобразуем строку в boolean
-  if (typeof featureValue === 'string') {
-    const lower = featureValue.toLowerCase().trim();
+  // String -> Boolean
+  if (typeof value === 'string') {
+    const lower = value.toLowerCase().trim();
     if (lower === 'false' || lower === '0' || lower === 'no' || lower === 'off') {
       return false;
     }
@@ -74,12 +98,9 @@ export function isFeatureEnabled(feature: FeatureFlag): boolean {
     }
   }
   
-  return Boolean(featureValue);
+  return Boolean(value);
 }
 
-/**
- * Получить все фичи
- */
 export function getAllFeatures(): Record<FeatureFlag, boolean> {
   const features: Record<string, boolean> = {};
   for (const key of Object.keys(DEFAULT_FEATURES) as FeatureFlag[]) {
@@ -88,22 +109,16 @@ export function getAllFeatures(): Record<FeatureFlag, boolean> {
   return features as Record<FeatureFlag, boolean>;
 }
 
-/**
- * React хук для использования фичей
- */
 export function useFeature(feature: FeatureFlag): boolean {
   return isFeatureEnabled(feature);
 }
 
-/**
- * Проверить, доступна ли страница
- */
 export function isPageEnabled(page: string): boolean {
   const pageFeature = `page_${page}` as FeatureFlag;
   if (pageFeature in DEFAULT_FEATURES) {
     return isFeatureEnabled(pageFeature);
   }
-  return true; // Страницы без фичи включены по умолчанию
+  return true;
 }
 
 export interface FeatureGateProps {
