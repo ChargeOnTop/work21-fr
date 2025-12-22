@@ -23,7 +23,7 @@ export type FeatureFlag =
 
 const DEFAULT_FEATURES: Record<FeatureFlag, boolean> = {
   ai_estimation: true,
-  dark_mode: true,
+  dark_mode: false,      // По умолчанию выключено, включается через фичу
   registration: true,
   new_dashboard: false,
   page_login: true,
