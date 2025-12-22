@@ -27,3 +27,13 @@ dark_mode
 registration
 И др.
 Настройки фич находятся в конфигурационных файлах (например, bro.config.js и соответствующих утилитах).
+
+📂 Структура репозитория
+├── src/                   # Исходный код фронтенда
+├── stubs/                 # Шаблоны и заглушки
+├── .gitignore
+├── bro.config.js          # Конфигурация BroJS
+├── package.json
+├── tailwind.config.js
+├── tsconfig.json
+└── README.md              # Текущая документация
