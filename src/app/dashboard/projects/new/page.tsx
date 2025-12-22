@@ -24,6 +24,8 @@ export default function NewProjectPage() {
   
   // Feature flags
   const isAiEstimationEnabled = isFeatureEnabled('ai_estimation');
+  const showDeadline = isFeatureEnabled('project_deadline');
+  const showTechSelect = isFeatureEnabled('project_tech_select');
   
   const [formData, setFormData] = useState<ProjectFormData>({
     title: '',
@@ -407,6 +409,7 @@ export default function NewProjectPage() {
             </div>
 
             {/* Deadline */}
+            {showDeadline && (
             <div>
               <label className="block text-sm font-medium mb-2" style={{ color: 'var(--color-text-secondary)' }}>
                 Срок выполнения
@@ -424,6 +427,7 @@ export default function NewProjectPage() {
                 }}
               />
             </div>
+            )}
           </div>
 
           {/* LLM Estimation - Full Width Field */}
@@ -440,6 +444,7 @@ export default function NewProjectPage() {
           )}
 
           {/* Tech Stack */}
+          {showTechSelect && (
           <div>
             <label className="block text-sm font-medium mb-2" style={{ color: 'var(--color-text-secondary)' }}>
               Технологии
@@ -488,6 +493,7 @@ export default function NewProjectPage() {
               </div>
             )}
           </div>
+          )}
         </div>
 
         {/* Submit Buttons */}

@@ -173,6 +173,7 @@ export default function ProfilePage() {
             </section>
 
             {/* Навыки */}
+            {showSkills && (
             <section className="glass-card rounded-2xl border border-work21-border p-6 space-y-6">
               <div className="flex items-center justify-between gap-4">
                 <div>
@@ -206,8 +207,10 @@ export default function ProfilePage() {
                 </div>
               )}
             </section>
+            )}
 
             {/* Медиа */}
+            {showAvatar && (
             <section className="glass-card rounded-2xl border border-work21-border p-6 space-y-4">
               <div>
                 <h2 className="text-xl font-semibold text-white">Фото профиля</h2>
@@ -242,6 +245,7 @@ export default function ProfilePage() {
                 </div>
               )}
             </section>
+            )}
 
             <div className="flex justify-end">
               <button
@@ -300,6 +304,7 @@ export default function ProfilePage() {
             </div>
           </section>
 
+          {showVerification && (
           <section className="glass-card rounded-2xl border border-work21-border p-6 space-y-4">
             <div className="flex items-center gap-3 text-white">
               <Shield className="w-5 h-5 text-accent-blue" />
@@ -313,6 +318,7 @@ export default function ProfilePage() {
               {user.is_verified ? 'Аккаунт подтверждён' : 'Ожидает подтверждения'}
             </div>
           </section>
+          )}
         </div>
       </div>
     </div>

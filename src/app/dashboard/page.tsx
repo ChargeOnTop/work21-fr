@@ -108,6 +108,7 @@ function StudentDashboard({ user, showStats, showRecommendations, showQuickActio
       </div>
 
       {/* Stats Grid */}
+      {showStats && (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((stat) => {
           const Icon = stat.icon;
@@ -134,8 +135,10 @@ function StudentDashboard({ user, showStats, showRecommendations, showQuickActio
           );
         })}
       </div>
+      )}
 
       {/* Quick Actions */}
+      {showQuickActions && (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Find Projects */}
         <div className="glass-card rounded-2xl p-6 border border-work21-border">
@@ -167,6 +170,7 @@ function StudentDashboard({ user, showStats, showRecommendations, showQuickActio
           </Link>
         </div>
       </div>
+      )}
 
       {/* Мои проекты (где студент назначен исполнителем) */}
       {myProjects.length > 0 && (
@@ -232,6 +236,7 @@ function StudentDashboard({ user, showStats, showRecommendations, showQuickActio
       )}
 
       {/* Рекомендованные проекты */}
+      {showRecommendations && (
       <div className="glass-card rounded-2xl p-6 border border-work21-border">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-lg font-semibold text-white">Рекомендованные проекты</h3>
@@ -299,6 +304,7 @@ function StudentDashboard({ user, showStats, showRecommendations, showQuickActio
           </div>
         )}
       </div>
+      )}
     </div>
   );
 }
@@ -385,6 +391,7 @@ function CustomerDashboard({ user, showStats, showRecommendations, showQuickActi
       </div>
 
       {/* Stats Grid */}
+      {showStats && (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((stat) => {
           const Icon = stat.icon;
@@ -411,8 +418,10 @@ function CustomerDashboard({ user, showStats, showRecommendations, showQuickActi
           );
         })}
       </div>
+      )}
 
       {/* Quick Actions */}
+      {showQuickActions && (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Create Project */}
         <Link
@@ -450,6 +459,7 @@ function CustomerDashboard({ user, showStats, showRecommendations, showQuickActi
           </div>
         </Link>
       </div>
+      )}
 
       {/* My Projects */}
       <div className="glass-card rounded-2xl p-6 border border-work21-border">
