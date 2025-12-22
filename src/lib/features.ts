@@ -2,12 +2,15 @@
  * Feature Flags для WORK21
  * 
  * Настройка:
- *   1. В bro.config.js → секция features
+ *   1. В bro.config.js → секция features["work21-fr"]
  *   2. В BroJS админке → вкладка "Фичи"
  * 
- * Ключи: ai_estimation, dark_mode, registration, new_dashboard, page_*
+ * API: getFeatureValue(pkg, featureName, defaultValue)
  */
 import { getFeatureValue } from "@brojs/cli";
+
+// Имя пакета из package.json
+const PKG_NAME = "work21-fr";
 
 export type FeatureFlag = 
   | 'ai_estimation'
@@ -34,16 +37,12 @@ const DEFAULT_FEATURES: Record<FeatureFlag, boolean> = {
 
 /**
  * Проверить, включена ли фича
- * Использует getFeatureValue из @brojs/cli
+ * Использует getFeatureValue(pkg, featureName, defaultValue) из @brojs/cli
  */
 export function isFeatureEnabled(feature: FeatureFlag): boolean {
-  // Читаем из секции features в bro.config.js или BroJS админки
-  const value = getFeatureValue(feature);
-  
-  // Если не задано - используем дефолт
-  if (value === undefined || value === null || value === '') {
-    return DEFAULT_FEATURES[feature];
-  }
+  // getFeatureValue(pkg, featureName, defaultValue)
+  // Возвращает features[pkg][featureName] ?? defaultValue
+  const value = getFeatureValue(PKG_NAME, feature, DEFAULT_FEATURES[feature]);
   
   // Boolean
   if (typeof value === 'boolean') {
