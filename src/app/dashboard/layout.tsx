@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { useNavigate, Outlet } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/lib/auth-context';
+import { useRoutes } from '@/lib/navigation';
 import { ThemeToggle } from '@/components';
 import {
   Zap,
@@ -18,36 +19,37 @@ import {
   Bell,
 } from 'lucide-react';
 
-// Навигация для студента
-const studentNavigation = [
-  { name: 'Главная', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Проекты', href: '/dashboard/projects', icon: FolderKanban },
-  { name: 'Мои заявки', href: '/dashboard/applications', icon: Briefcase },
-  { name: 'Рейтинг', href: '/dashboard/rating', icon: Trophy },
-  { name: 'Профиль', href: '/dashboard/profile', icon: User },
-  { name: 'Настройки', href: '/dashboard/settings', icon: Settings },
-];
-
-// Навигация для заказчика
-const customerNavigation = [
-  { name: 'Главная', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Мои проекты', href: '/dashboard/projects', icon: FolderKanban },
-  { name: 'Создать проект', href: '/dashboard/projects/new', icon: Plus },
-  { name: 'Исполнители', href: '/dashboard/students', icon: User },
-  { name: 'Профиль', href: '/dashboard/profile', icon: User },
-  { name: 'Настройки', href: '/dashboard/settings', icon: Settings },
-];
-
 export default function DashboardLayout() {
   const { user, isLoading, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
+  const routes = useRoutes();
+
+  // Навигация для студента
+  const studentNavigation = [
+    { name: 'Главная', href: routes.dashboard, icon: LayoutDashboard },
+    { name: 'Проекты', href: routes.projects, icon: FolderKanban },
+    { name: 'Мои заявки', href: routes.applications, icon: Briefcase },
+    { name: 'Рейтинг', href: routes.rating, icon: Trophy },
+    { name: 'Профиль', href: routes.profile, icon: User },
+    { name: 'Настройки', href: routes.settings, icon: Settings },
+  ];
+
+  // Навигация для заказчика
+  const customerNavigation = [
+    { name: 'Главная', href: routes.dashboard, icon: LayoutDashboard },
+    { name: 'Мои проекты', href: routes.projects, icon: FolderKanban },
+    { name: 'Создать проект', href: routes.newProject, icon: Plus },
+    { name: 'Исполнители', href: routes.students, icon: User },
+    { name: 'Профиль', href: routes.profile, icon: User },
+    { name: 'Настройки', href: routes.settings, icon: Settings },
+  ];
 
   // Редирект на логин если не авторизован
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      navigate('/login');
+      navigate(routes.login);
     }
-  }, [isLoading, isAuthenticated, navigate]);
+  }, [isLoading, isAuthenticated, navigate, routes.login]);
 
   // Показываем загрузку
   if (isLoading) {
@@ -74,7 +76,7 @@ export default function DashboardLayout() {
       <aside className="w-64 flex flex-col transition-colors duration-300" style={{ background: 'var(--color-card)', borderRight: '1px solid var(--color-border)' }}>
         {/* Logo */}
         <div className="p-6" style={{ borderBottom: '1px solid var(--color-border)' }}>
-          <Link to="/dashboard" className="flex items-center gap-2">
+          <Link to={routes.dashboard} className="flex items-center gap-2">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-accent-green to-accent-blue flex items-center justify-center">
               <Zap className="w-5 h-5 text-white" />
             </div>
@@ -166,7 +168,7 @@ export default function DashboardLayout() {
             
             {/* Notifications */}
             <Link
-              to="/dashboard/settings"
+              to={routes.settings}
               className="relative p-2 rounded-lg transition-colors"
               style={{ color: 'var(--color-text-secondary)' }}
             >

@@ -4,18 +4,20 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Menu, X, Zap, User } from 'lucide-react'
 import { useAuth } from '@/lib/auth-context'
+import { useRoutes } from '@/lib/navigation'
 import ThemeToggle from './ThemeToggle'
-
-const navigation = [
-  { name: 'Главная', href: '/' },
-  { name: 'Для студентов', href: '/students' },
-  { name: 'Для заказчиков', href: '/customers' },
-  { name: 'Как это работает', href: '/how-it-works' },
-]
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { user, isAuthenticated, isLoading } = useAuth()
+  const routes = useRoutes()
+  
+  const navigation = [
+    { name: 'Главная', href: routes.home },
+    { name: 'Для студентов', href: '/students' },
+    { name: 'Для заказчиков', href: '/customers' },
+    { name: 'Как это работает', href: '/how-it-works' },
+  ]
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl border-b transition-colors duration-300"
@@ -57,7 +59,7 @@ export default function Header() {
               <div className="w-5 h-5 border-2 border-gray-600 border-t-white rounded-full animate-spin" />
             ) : isAuthenticated && user ? (
               <Link 
-                to="/dashboard" 
+                to={routes.dashboard} 
                 className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors"
                 style={{
                   background: 'var(--color-card)',
@@ -74,10 +76,10 @@ export default function Header() {
               </Link>
             ) : (
               <>
-                <Link to="/login" className="text-sm transition-colors" style={{ color: 'var(--color-text-secondary)' }}>
+                <Link to={routes.login} className="text-sm transition-colors" style={{ color: 'var(--color-text-secondary)' }}>
                   Войти
                 </Link>
-                <Link to="/register" className="btn-primary text-sm">
+                <Link to={routes.register} className="btn-primary text-sm">
                   Начать
                 </Link>
               </>
@@ -117,7 +119,7 @@ export default function Header() {
                 <ThemeToggle />
                 {isAuthenticated && user ? (
                   <Link 
-                    to="/dashboard" 
+                    to={routes.dashboard} 
                     className="btn-primary text-sm flex-1 text-center"
                     onClick={() => setMobileMenuOpen(false)}
                   >
@@ -125,10 +127,10 @@ export default function Header() {
                   </Link>
                 ) : (
                   <>
-                    <Link to="/login" className="btn-secondary text-sm flex-1 text-center">
+                    <Link to={routes.login} className="btn-secondary text-sm flex-1 text-center">
                       Войти
                     </Link>
-                    <Link to="/register" className="btn-primary text-sm flex-1 text-center">
+                    <Link to={routes.register} className="btn-primary text-sm flex-1 text-center">
                       Начать
                     </Link>
                   </>
