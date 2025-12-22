@@ -1,0 +1,119 @@
+{
+  "estimate": {
+    "success": {
+      "project": {
+        "title": "Мобильное приложение",
+        "summary": "Разработка мобильного приложения для iOS и Android"
+      },
+      "tasks": [
+        {
+          "id": "task-1",
+          "title": "Проектирование архитектуры",
+          "description": "Разработка архитектуры приложения и выбор технологий",
+          "hours": 16,
+          "priority": "high",
+          "role": "backend",
+          "depends_on": []
+        },
+        {
+          "id": "task-2",
+          "title": "Дизайн UI/UX",
+          "description": "Создание макетов и прототипов интерфейса",
+          "hours": 24,
+          "priority": "high",
+          "role": "ux",
+          "depends_on": ["task-1"]
+        },
+        {
+          "id": "task-3",
+          "title": "Разработка API",
+          "description": "Создание REST API для мобильного приложения",
+          "hours": 40,
+          "priority": "high",
+          "role": "backend",
+          "depends_on": ["task-1"]
+        },
+        {
+          "id": "task-4",
+          "title": "Разработка мобильного приложения",
+          "description": "Реализация интерфейса и логики на React Native",
+          "hours": 80,
+          "priority": "high",
+          "role": "frontend",
+          "depends_on": ["task-2", "task-3"]
+        },
+        {
+          "id": "task-5",
+          "title": "Тестирование",
+          "description": "Функциональное и интеграционное тестирование",
+          "hours": 24,
+          "priority": "medium",
+          "role": "qa",
+          "depends_on": ["task-4"]
+        }
+      ],
+      "critical_paths": ["task-1 -> task-3 -> task-4 -> task-5"],
+      "cost_estimate": {
+        "breakdown": [
+          {"id": "task-1", "title": "Проектирование архитектуры", "hours": 16, "role": "backend", "rate": 2000, "cost": 32000},
+          {"id": "task-2", "title": "Дизайн UI/UX", "hours": 24, "role": "ux", "rate": 1600, "cost": 38400},
+          {"id": "task-3", "title": "Разработка API", "hours": 40, "role": "backend", "rate": 2000, "cost": 80000},
+          {"id": "task-4", "title": "Разработка мобильного приложения", "hours": 80, "role": "frontend", "rate": 1800, "cost": 144000},
+          {"id": "task-5", "title": "Тестирование", "hours": 24, "role": "qa", "rate": 1500, "cost": 36000}
+        ],
+        "total": 330400
+      },
+      "timeline_estimate": {
+        "project_start": "2025-01-06",
+        "project_end": "2025-02-14",
+        "total_work_days": 30,
+        "role_days": {
+          "backend": 7,
+          "ux": 3,
+          "frontend": 10,
+          "qa": 3
+        },
+        "task_schedule": [
+          {"id": "task-1", "title": "Проектирование архитектуры", "role": "backend", "hours": 16, "start_date": "2025-01-06", "end_date": "2025-01-07", "duration_days": 2, "depends_on": []},
+          {"id": "task-2", "title": "Дизайн UI/UX", "role": "ux", "hours": 24, "start_date": "2025-01-08", "end_date": "2025-01-10", "duration_days": 3, "depends_on": ["task-1"]},
+          {"id": "task-3", "title": "Разработка API", "role": "backend", "hours": 40, "start_date": "2025-01-08", "end_date": "2025-01-14", "duration_days": 5, "depends_on": ["task-1"]},
+          {"id": "task-4", "title": "Разработка мобильного приложения", "role": "frontend", "hours": 80, "start_date": "2025-01-15", "end_date": "2025-01-28", "duration_days": 10, "depends_on": ["task-2", "task-3"]},
+          {"id": "task-5", "title": "Тестирование", "role": "qa", "hours": 24, "start_date": "2025-01-29", "end_date": "2025-01-31", "duration_days": 3, "depends_on": ["task-4"]}
+        ]
+      },
+      "generated_at": "2024-12-22T10:00:00Z",
+      "success": true
+    },
+    "error": {
+      "success": false,
+      "error": "Не удалось получить оценку от AI. Попробуйте позже."
+    },
+    "error_empty_description": {
+      "success": false,
+      "error": "Описание проекта не может быть пустым"
+    }
+  },
+  "chat": {
+    "success": {
+      "model": "GigaChat",
+      "response": "На основе вашего описания проекта, рекомендую использовать React Native для мобильной разработки и Node.js для бэкенда.",
+      "success": true
+    },
+    "error": {
+      "success": false,
+      "error": "Сервис временно недоступен"
+    }
+  },
+  "health": {
+    "success": {
+      "status": "healthy",
+      "provider": "GigaChat",
+      "model": "GigaChat-Pro"
+    },
+    "error": {
+      "status": "unhealthy",
+      "error": "GigaChat API недоступен"
+    }
+  }
+}
+

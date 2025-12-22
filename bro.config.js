@@ -34,19 +34,40 @@ module.exports = {
       ],
     },
   },
-  /* use https://admin.brojs.ru/ to create config, navigations and features */
+  
+  /* Навигация — пункты меню приложения */
   navigations: {
     "work21-fr.main": "/work21-fr",
+    "work21-fr.login": "/work21-fr/login",
+    "work21-fr.register": "/work21-fr/register",
+    "work21-fr.dashboard": "/work21-fr/dashboard",
+    "work21-fr.dashboard.projects": "/work21-fr/dashboard/projects",
+    "work21-fr.dashboard.projects.new": "/work21-fr/dashboard/projects/new",
+    "work21-fr.dashboard.applications": "/work21-fr/dashboard/applications",
+    "work21-fr.dashboard.profile": "/work21-fr/dashboard/profile",
+    "work21-fr.dashboard.settings": "/work21-fr/dashboard/settings",
+    "work21-fr.dashboard.rating": "/work21-fr/dashboard/rating",
   },
+  
+  /* Фичи — переключатели функционала */
   features: {
-    "work21-fr": {
-      // add your features here in the format [featureName]: { value: string }
-    },
+    "features.ai_estimation": true,      // AI оценка проектов (GigaChat)
+    "features.dark_mode": true,          // Переключение тёмной темы
+    "features.registration": true,       // Регистрация новых пользователей
+    "features.new_dashboard": false,     // Новый дизайн дашборда (A/B тест)
+    "features.page_login": true,         // Страница входа
+    "features.page_register": true,      // Страница регистрации
+    "features.page_dashboard": true,     // Страница дашборда
+    "features.page_projects": true,      // Страница проектов
+    "features.page_profile": true,       // Страница профиля
   },
+  
+  /* Конфигурация — настройки приложения */
   config: {
     "work21-fr.api": process.env.API_URL || "http://localhost:8000",
     "work21-fr.api.estimator": process.env.ESTIMATOR_API_URL || "http://localhost:8080"
   },
-  // Укажите путь к кастомному HTML-шаблону для prom-режима или оставьте undefined
+  
+  // Оставляем путь к кастомному HTML-шаблону для prod-сборки или оставляем undefined
   htmlTemplatePath: undefined,
 };

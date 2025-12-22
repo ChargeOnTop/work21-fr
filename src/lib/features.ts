@@ -1,12 +1,10 @@
 /**
  * Feature Flags для WORK21
- * Управление функционалом через BroJS админку (раздел "Конфиг")
+ * Управление функционалом через BroJS админку (раздел "Фичи")
  * 
- * В админке добавляйте ключи в формате:
- *   features.dark_mode = false
- *   features.ai_estimation = true
+ * Используем getFeatureValue для чтения фичей из раздела "Фичи" админки
  */
-import { getConfigValue } from "@brojs/cli";
+import { getFeatureValue, getConfigValue } from "@brojs/cli";
 
 /**
  * Доступные feature flags
@@ -15,7 +13,12 @@ export type FeatureFlag =
   | 'ai_estimation'    // AI оценка проектов (GigaChat)
   | 'dark_mode'        // Тёмная тема
   | 'registration'     // Регистрация новых пользователей
-  | 'new_dashboard';   // Новый дизайн дашборда
+  | 'new_dashboard'    // Новый дизайн дашборда
+  | 'page_login'       // Страница входа
+  | 'page_register'    // Страница регистрации
+  | 'page_dashboard'   // Страница дашборда
+  | 'page_projects'    // Страница проектов
+  | 'page_profile';    // Страница профиля
 
 /**
  * Значения по умолчанию для фичей
@@ -25,31 +28,44 @@ const DEFAULT_FEATURES: Record<FeatureFlag, boolean> = {
   dark_mode: true,
   registration: true,
   new_dashboard: false,
+  page_login: true,
+  page_register: true,
+  page_dashboard: true,
+  page_projects: true,
+  page_profile: true,
 };
 
 /**
  * Проверить, включена ли фича
- * @param feature - название фичи
+ * Использует getFeatureValue из @brojs/cli для раздела "Фичи" в админке
+ * 
+ * @param feature - название фичи (ключ в админке: features.{feature})
  * @returns true если фича включена
  */
 export function isFeatureEnabled(feature: FeatureFlag): boolean {
-  // Ключ в формате: work21-fr.features.dark_mode
-  const key = `work21-fr.features.${feature}`;
-  const configValue = getConfigValue(key);
+  // Используем getFeatureValue для чтения из раздела "Фичи"
+  const featureKey = `features.${feature}`;
+  let featureValue = getFeatureValue(featureKey);
   
-  // Если значение не задано в конфиге, используем дефолтное
-  if (configValue === undefined || configValue === null || configValue === '') {
+  // Fallback на getConfigValue если getFeatureValue не нашёл
+  if (featureValue === undefined || featureValue === null) {
+    const configKey = `work21-fr.features.${feature}`;
+    featureValue = getConfigValue(configKey);
+  }
+  
+  // Если значение не задано, используем дефолтное
+  if (featureValue === undefined || featureValue === null || featureValue === '') {
     return DEFAULT_FEATURES[feature];
   }
   
   // Обрабатываем boolean
-  if (typeof configValue === 'boolean') {
-    return configValue;
+  if (typeof featureValue === 'boolean') {
+    return featureValue;
   }
   
   // Преобразуем строку в boolean
-  if (typeof configValue === 'string') {
-    const lower = configValue.toLowerCase().trim();
+  if (typeof featureValue === 'string') {
+    const lower = featureValue.toLowerCase().trim();
     if (lower === 'false' || lower === '0' || lower === 'no' || lower === 'off') {
       return false;
     }
@@ -58,19 +74,18 @@ export function isFeatureEnabled(feature: FeatureFlag): boolean {
     }
   }
   
-  return Boolean(configValue);
+  return Boolean(featureValue);
 }
 
 /**
  * Получить все фичи
  */
 export function getAllFeatures(): Record<FeatureFlag, boolean> {
-  return {
-    ai_estimation: isFeatureEnabled('ai_estimation'),
-    dark_mode: isFeatureEnabled('dark_mode'),
-    registration: isFeatureEnabled('registration'),
-    new_dashboard: isFeatureEnabled('new_dashboard'),
-  };
+  const features: Record<string, boolean> = {};
+  for (const key of Object.keys(DEFAULT_FEATURES) as FeatureFlag[]) {
+    features[key] = isFeatureEnabled(key);
+  }
+  return features as Record<FeatureFlag, boolean>;
 }
 
 /**
@@ -78,6 +93,17 @@ export function getAllFeatures(): Record<FeatureFlag, boolean> {
  */
 export function useFeature(feature: FeatureFlag): boolean {
   return isFeatureEnabled(feature);
+}
+
+/**
+ * Проверить, доступна ли страница
+ */
+export function isPageEnabled(page: string): boolean {
+  const pageFeature = `page_${page}` as FeatureFlag;
+  if (pageFeature in DEFAULT_FEATURES) {
+    return isFeatureEnabled(pageFeature);
+  }
+  return true; // Страницы без фичи включены по умолчанию
 }
 
 export interface FeatureGateProps {

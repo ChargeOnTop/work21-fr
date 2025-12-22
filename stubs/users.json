@@ -1,0 +1,64 @@
+{
+  "me": {
+    "success_student": {
+      "id": 1,
+      "email": "student@example.com",
+      "first_name": "Иван",
+      "last_name": "Петров",
+      "role": "student",
+      "bio": "Fullstack разработчик с опытом в React и Python",
+      "skills": "React, TypeScript, Python, PostgreSQL",
+      "avatar_url": null,
+      "rating_score": 4.5,
+      "completed_projects": 12,
+      "is_active": true,
+      "is_verified": true,
+      "created_at": "2024-01-15T10:00:00Z"
+    },
+    "success_customer": {
+      "id": 2,
+      "email": "customer@example.com",
+      "first_name": "Мария",
+      "last_name": "Сидорова",
+      "role": "customer",
+      "bio": "IT компания, ищем талантливых разработчиков",
+      "skills": null,
+      "avatar_url": null,
+      "rating_score": 4.8,
+      "completed_projects": 25,
+      "is_active": true,
+      "is_verified": true,
+      "created_at": "2024-02-20T10:00:00Z"
+    },
+    "error_unauthorized": {
+      "detail": "Not authenticated"
+    }
+  },
+  "leaderboard": {
+    "success": [
+      {
+        "id": 1,
+        "first_name": "Алексей",
+        "last_name": "Иванов",
+        "rating_score": 4.95,
+        "completed_projects": 45
+      },
+      {
+        "id": 2,
+        "first_name": "Елена",
+        "last_name": "Смирнова",
+        "rating_score": 4.88,
+        "completed_projects": 38
+      },
+      {
+        "id": 3,
+        "first_name": "Дмитрий",
+        "last_name": "Козлов",
+        "rating_score": 4.82,
+        "completed_projects": 32
+      }
+    ],
+    "empty": []
+  }
+}
+

@@ -1,0 +1,114 @@
+{
+  "list": {
+    "success": [
+      {
+        "id": 1,
+        "title": "Мобильное приложение для доставки еды",
+        "description": "Разработка мобильного приложения для iOS и Android с функциями заказа еды, отслеживания доставки и онлайн-оплаты.",
+        "requirements": "React Native, Firebase, интеграция с платежными системами",
+        "budget": 150000,
+        "deadline": "2025-02-15T18:00:00Z",
+        "tech_stack": ["React Native", "TypeScript", "Firebase", "Node.js"],
+        "status": "open",
+        "customer_id": 2,
+        "assignee_id": null,
+        "created_at": "2024-12-20T10:00:00Z",
+        "updated_at": "2024-12-20T10:00:00Z",
+        "tasks": []
+      },
+      {
+        "id": 2,
+        "title": "Корпоративный сайт для IT-компании",
+        "description": "Разработка современного корпоративного сайта с блогом, портфолио и формой обратной связи.",
+        "requirements": "Next.js, адаптивный дизайн, SEO оптимизация",
+        "budget": 80000,
+        "deadline": "2025-01-30T18:00:00Z",
+        "tech_stack": ["Next.js", "Tailwind CSS", "PostgreSQL"],
+        "status": "open",
+        "customer_id": 3,
+        "assignee_id": null,
+        "created_at": "2024-12-19T14:00:00Z",
+        "updated_at": "2024-12-19T14:00:00Z",
+        "tasks": []
+      },
+      {
+        "id": 3,
+        "title": "Telegram бот для записи на услуги",
+        "description": "Создание Telegram бота с возможностью записи на услуги, напоминаниями и интеграцией с Google Calendar.",
+        "requirements": "Python, aiogram, PostgreSQL",
+        "budget": 45000,
+        "deadline": "2025-01-20T18:00:00Z",
+        "tech_stack": ["Python", "aiogram", "PostgreSQL"],
+        "status": "open",
+        "customer_id": 2,
+        "assignee_id": null,
+        "created_at": "2024-12-18T09:00:00Z",
+        "updated_at": "2024-12-18T09:00:00Z",
+        "tasks": []
+      }
+    ],
+    "empty": [],
+    "error": {
+      "detail": "Ошибка при загрузке проектов"
+    }
+  },
+  "my": {
+    "success_customer": [
+      {
+        "id": 1,
+        "title": "Мобильное приложение для доставки еды",
+        "description": "Разработка мобильного приложения",
+        "budget": 150000,
+        "status": "in_progress",
+        "customer_id": 2,
+        "assignee_id": 1,
+        "created_at": "2024-12-01T10:00:00Z",
+        "tasks": []
+      }
+    ],
+    "success_student": [
+      {
+        "id": 1,
+        "title": "Мобильное приложение для доставки еды",
+        "description": "Разработка мобильного приложения",
+        "budget": 150000,
+        "status": "in_progress",
+        "customer_id": 2,
+        "assignee_id": 1,
+        "created_at": "2024-12-01T10:00:00Z",
+        "tasks": []
+      }
+    ],
+    "empty": []
+  },
+  "create": {
+    "success": {
+      "id": 4,
+      "title": "Новый проект",
+      "description": "Описание нового проекта",
+      "budget": 100000,
+      "status": "draft",
+      "customer_id": 2,
+      "created_at": "2024-12-22T10:00:00Z",
+      "tasks": []
+    },
+    "validation_error": {
+      "detail": "Название проекта обязательно"
+    }
+  },
+  "apply": {
+    "success": {
+      "id": 1,
+      "project_id": 1,
+      "student_id": 1,
+      "cover_letter": "Готов взяться за проект",
+      "proposed_rate": null,
+      "status": "pending",
+      "created_at": "2024-12-22T10:00:00Z"
+    },
+    "error_already_applied": {
+      "detail": "Вы уже подали заявку на этот проект"
+    }
+  }
+}
+
