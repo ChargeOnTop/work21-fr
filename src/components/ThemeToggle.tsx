@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Sun, Moon } from 'lucide-react';
 import { useTheme } from '@/lib/theme-context';
 import { isFeatureEnabled } from '@/lib/features';
@@ -11,8 +11,14 @@ export default function ThemeToggle() {
   // Проверяем feature flag для тёмной темы
   const isDarkModeEnabled = isFeatureEnabled('dark_mode');
   
+  // Логируем для отладки
+  useEffect(() => {
+    console.log('[ThemeToggle] dark_mode feature enabled:', isDarkModeEnabled);
+  }, [isDarkModeEnabled]);
+  
   // Если переключение темы отключено - не показываем кнопку
   if (!isDarkModeEnabled) {
+    console.log('[ThemeToggle] Hiding button because dark_mode is disabled');
     return null;
   }
 

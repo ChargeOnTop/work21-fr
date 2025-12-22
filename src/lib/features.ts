@@ -33,25 +33,34 @@ export function isFeatureEnabled(feature: FeatureFlag): boolean {
   const key1 = `work21-fr.features.${feature}`;
   const key2 = `features.${feature}`;
   
-  let configValue = getConfigValue(key1);
+  const value1 = getConfigValue(key1);
+  const value2 = getConfigValue(key2);
   
-  // Если не нашли с префиксом, пробуем без
+  // Всегда логируем для отладки
+  console.log(`[Feature] ${feature}:`, {
+    key1,
+    value1,
+    type1: typeof value1,
+    key2,
+    value2,
+    type2: typeof value2,
+  });
+  
+  // Используем первое найденное значение
+  let configValue = value1;
   if (configValue === undefined || configValue === null) {
-    configValue = getConfigValue(key2);
-  }
-  
-  // Отладка (можно убрать в продакшене)
-  if (typeof window !== 'undefined' && (window as any).__FEATURE_DEBUG__) {
-    console.log(`[Feature] ${feature}:`, { key1, key2, configValue, type: typeof configValue });
+    configValue = value2;
   }
   
   // Если значение не задано в конфиге, используем дефолтное
   if (configValue === undefined || configValue === null || configValue === '') {
+    console.log(`[Feature] ${feature}: using default =`, DEFAULT_FEATURES[feature]);
     return DEFAULT_FEATURES[feature];
   }
   
   // Обрабатываем boolean
   if (typeof configValue === 'boolean') {
+    console.log(`[Feature] ${feature}: boolean value =`, configValue);
     return configValue;
   }
   
@@ -60,16 +69,20 @@ export function isFeatureEnabled(feature: FeatureFlag): boolean {
     const lower = configValue.toLowerCase().trim();
     // false, 0, "false", "0", "no", "off" = выключено
     if (lower === 'false' || lower === '0' || lower === 'no' || lower === 'off') {
+      console.log(`[Feature] ${feature}: string "${configValue}" = false`);
       return false;
     }
     // true, 1, "true", "1", "yes", "on" = включено
     if (lower === 'true' || lower === '1' || lower === 'yes' || lower === 'on') {
+      console.log(`[Feature] ${feature}: string "${configValue}" = true`);
       return true;
     }
   }
   
   // Fallback
-  return Boolean(configValue);
+  const result = Boolean(configValue);
+  console.log(`[Feature] ${feature}: fallback Boolean() =`, result);
+  return result;
 }
 
 /**
@@ -83,18 +96,6 @@ export function getAllFeatures(): Record<FeatureFlag, boolean> {
     registration: isFeatureEnabled('registration'),
     new_dashboard: isFeatureEnabled('new_dashboard'),
   };
-}
-
-/**
- * Включить отладку feature flags в консоли браузера
- * Вызовите в консоли: window.__FEATURE_DEBUG__ = true
- * Затем перезагрузите страницу
- */
-export function enableFeatureDebug(): void {
-  if (typeof window !== 'undefined') {
-    (window as any).__FEATURE_DEBUG__ = true;
-    console.log('[Feature] Debug enabled. Reload the page to see logs.');
-  }
 }
 
 /**
