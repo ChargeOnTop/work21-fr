@@ -1,116 +1,15 @@
-# WORK21 Frontend (BroJS)
+﻿# WORK21 Frontend (BroJS)
 
-РљР»РёРµРЅС‚СЃРєРѕРµ РїСЂРёР»РѕР¶РµРЅРёРµ РЅР° BroJS/React РґР»СЏ РїР»Р°С‚С„РѕСЂРјС‹ WORK21. Р’СЃРµ РЅР°СЃС‚СЂРѕР№РєРё (РЅР°РІРёРіР°С†РёСЏ, РєРѕРЅС„РёРі, С„РёС‡Рё) СѓРїСЂР°РІР»СЏСЋС‚СЃСЏ С‡РµСЂРµР· BroJS Р°РґРјРёРЅРєСѓ.
+Client SPA built with BroJS/React for WORK21.
+Admin-managed: navigation, config, feature flags.
 
-## РЎС‚РµРє
-- BroJS (@brojs/cli)
-- React 18, React Router 7
-- TypeScript/JS (CommonJS)
-- TailwindCSS/PostCSS
-- Lucide Icons
+Scripts:
+- npm start (dev server http://localhost:8099)
+- npm run build (dev), npm run build:prod (prod)
 
-## РўСЂРµР±РѕРІР°РЅРёСЏ
-- Node.js LTS (СЂРµРєРѕРјРµРЅРґСѓРµС‚СЃСЏ 18+)
-- npm
+BroJS admin keys:
+- Navigation: work21-fr.main/login/register/dashboard/...
+- Config: work21-fr.api, work21-fr.api.estimator
+- Features: ai_estimation, dark_mode, registration, etc.
 
-## РЈСЃС‚Р°РЅРѕРІРєР°
-```bash
-npm install
-```
-
-## РЎРєСЂРёРїС‚С‹
-- `npm start` вЂ” Р»РѕРєР°Р»СЊРЅС‹Р№ dev-СЃРµСЂРІРµСЂ BroJS РЅР° `http://localhost:8099` (HMR).
-- `npm run build` вЂ” СЃР±РѕСЂРєР° dev-Р°СЂС‚РµС„Р°РєС‚РѕРІ (СЃ СЃРѕС…СЂР°РЅРµРЅРёРµРј sourcemaps).
-- `npm run build:prod` вЂ” РїСЂРѕРґ-СЃР±РѕСЂРєР°.
-- `npm run clean` вЂ” РѕС‡РёСЃС‚РєР° `dist/`.
-- `npm run compile` вЂ” РєРѕРјРїРёР»СЏС†РёСЏ РјРѕРґСѓР»РµР№.
-- `npm run prom` вЂ” prom-server (РєР°Рє `start`, РЅРѕ РїРѕСЃР»Рµ `compile`).
-
-## РЎС‚СЂСѓРєС‚СѓСЂР°
-- `src/` вЂ” РєРѕРґ РїСЂРёР»РѕР¶РµРЅРёСЏ.
-- `stubs/api/*.json` вЂ” Р·Р°РіР»СѓС€РєРё API РґР»СЏ BroJS (auth, users, projects, estimator).
-- `bro.config.js` вЂ” РєРѕРЅС„РёРіСѓСЂР°С†РёСЏ РЅР°РІРёРіР°С†РёРё, С„РёС‡ Рё API.
-
-## BroJS Р°РґРјРёРЅРєР°
-Р’СЃРµ РЅР°СЃС‚СЂРѕР№РєРё РґРµР»Р°СЋС‚СЃСЏ РІРѕ РІРєР»Р°РґРєР°С…:
-
-### 1) РќР°РІРёРіР°С†РёСЏ (РєР»СЋС‡ в†’ URL)
-```
-work21-fr.main                      /work21-fr
-work21-fr.login                     /work21-fr/login
-work21-fr.register                  /work21-fr/register
-work21-fr.dashboard                 /work21-fr/dashboard
-work21-fr.dashboard.projects        /work21-fr/dashboard/projects
-work21-fr.dashboard.projects.new    /work21-fr/dashboard/projects/new
-work21-fr.dashboard.applications    /work21-fr/dashboard/applications
-work21-fr.dashboard.profile         /work21-fr/dashboard/profile
-work21-fr.dashboard.settings        /work21-fr/dashboard/settings
-work21-fr.dashboard.rating          /work21-fr/dashboard/rating
-work21-fr.dashboard.students        /work21-fr/dashboard/students
-```
-
-### 2) РљРѕРЅС„РёРі (РєР»СЋС‡ в†’ Р·РЅР°С‡РµРЅРёРµ)
-```
-work21-fr.api             https://api.work-21.com          # Р±Р°Р·РѕРІС‹Р№ backend
-work21-fr.api.estimator   https://api.work-21.com/agent    # AI-РѕС†РµРЅРєР°
-```
-
-### 3) Р¤РёС‡Рё (РєР»СЋС‡ в†’ true/false)
-Р’СЃРµ С„РёС‡Рё С‡РёС‚Р°СЋС‚СЃСЏ РґРёРЅР°РјРёС‡РµСЃРєРё, РЅРµС‚ Р·РЅР°С‡РµРЅРёСЏ вЂ” РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґРµС„РѕР»С‚ `true`, РєСЂРѕРјРµ `new_dashboard: false`.
-
-**РћСЃРЅРѕРІРЅС‹Рµ**
-- `ai_estimation` вЂ” РєРЅРѕРїРєР° AI-РѕС†РµРЅРєРё РЅР° СЃРѕР·РґР°РЅРёРё РїСЂРѕРµРєС‚Р°.
-- `dark_mode` вЂ” РєРЅРѕРїРєР° РїРµСЂРµРєР»СЋС‡РµРЅРёСЏ С‚РµРјС‹.
-- `registration` вЂ” РґРѕСЃС‚СѓРїРЅРѕСЃС‚СЊ СЂРµРіРёСЃС‚СЂР°С†РёРё.
-
-**Login**
-- `forgot_password` вЂ” СЃСЃС‹Р»РєР° В«Р—Р°Р±С‹Р»Рё РїР°СЂРѕР»СЊ?В». 
-- `quick_role_select` вЂ” РєРЅРѕРїРєРё В«РЇ СЃС‚СѓРґРµРЅС‚ / РЇ Р·Р°РєР°Р·С‡РёРєВ».
-
-**Dashboard**
-- `dashboard_stats` вЂ” РіСЂРёРґ СЃС‚Р°С‚РёСЃС‚РёРєРё.
-- `dashboard_recommendations` вЂ” Р±Р»РѕРє В«Р РµРєРѕРјРµРЅРґРѕРІР°РЅРЅС‹Рµ РїСЂРѕРµРєС‚С‹В».
-- `dashboard_quick_actions` вЂ” Р±С‹СЃС‚СЂС‹Рµ РґРµР№СЃС‚РІРёСЏ.
-
-**Projects (РЅРѕРІС‹Р№ РїСЂРѕРµРєС‚)**
-- `project_deadline` вЂ” РїРѕР»Рµ РґРµРґР»Р°Р№РЅР°.
-- `project_tech_select` вЂ” РїРѕР»Рµ РІС‹Р±РѕСЂР° С‚РµС…РЅРѕР»РѕРіРёР№.
-
-**Projects (СЃРїРёСЃРѕРє)**
-- `project_tech_stack` вЂ” РїРѕРєР°Р· СЃС‚РµРєР°.
-- `project_tasks` вЂ” РїРѕРєР°Р· Р·Р°РґР°С‡.
-- `project_requirements` вЂ” РїРѕРєР°Р· С‚СЂРµР±РѕРІР°РЅРёР№.
-
-**Profile**
-- `profile_avatar` вЂ” СЃРµРєС†РёСЏ Р°РІР°С‚Р°СЂР°.
-- `profile_skills` вЂ” СЃРµРєС†РёСЏ РЅР°РІС‹РєРѕРІ.
-- `profile_verification` вЂ” Р±Р»РѕРє РІРµСЂРёС„РёРєР°С†РёРё.
-
-**Home**
-- `hero_stats` вЂ” РєР°СЂС‚РѕС‡РєРё СЃС‚Р°С‚РёСЃС‚РёРєРё РІ Hero.
-- `cta_section` вЂ” СЃРµРєС†РёСЏ РїСЂРёР·С‹РІР° В«Р“РѕС‚РѕРІС‹ РЅР°С‡Р°С‚СЊ?В».
-
-## Р Р°Р±РѕС‚Р° СЃРѕ СЃС‚СѓР±Р°РјРё
-- Р¤Р°Р№Р»С‹ РІ `stubs/api/*.json` РёСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ BroJS РїСЂРё Р»РѕРєР°Р»СЊРЅРѕР№ СЂР°Р·СЂР°Р±РѕС‚РєРµ.
-- Р”Р»СЏ РёРЅС‚РµРіСЂР°С†РёРё СЃ СЂРµР°Р»СЊРЅС‹Рј API Р·Р°РґР°Р№С‚Рµ `work21-fr.api` Рё `work21-fr.api.estimator` РІ Р°РґРјРёРЅРєРµ/РїРµСЂРµРјРµРЅРЅС‹С… РѕРєСЂСѓР¶РµРЅРёСЏ.
-
-## Р›РѕРєР°Р»СЊРЅС‹Р№ Р·Р°РїСѓСЃРє
-```bash
-npm start
-# РѕС‚РєСЂРѕРµС‚СЃСЏ http://localhost:8099/work21-fr
-```
-
-## Prod-СЃР±РѕСЂРєР°
-```bash
-npm run build:prod
-# Р°СЂС‚РµС„Р°РєС‚С‹ РІ dist/ (publicPath РІРєР»СЋС‡Р°РµС‚ РІРµСЂСЃРёСЋ РїР°РєРµС‚Р°)
-```
-
-## Р“РґРµ РїСЂР°РІРёС‚СЊ РєР»СЋС‡Рё
-- РќР°РІРёРіР°С†РёСЏ, РљРѕРЅС„РёРі, Р¤РёС‡Рё вЂ” С‚РѕР»СЊРєРѕ С‡РµСЂРµР· BroJS Р°РґРјРёРЅРєСѓ (РІРєР»Р°РґРєРё В«РќР°РІРёРіР°С†РёСЏВ», В«РљРѕРЅС„РёРіВ», В«Р¤РёС‡РёВ»).
-- РљРѕРґ РїРѕРґС‚СЏРіРёРІР°РµС‚ Р·РЅР°С‡РµРЅРёСЏ РґРёРЅР°РјРёС‡РµСЃРєРё, РїРµСЂРµР·Р°РїСѓСЃРє С„СЂРѕРЅС‚Р° РЅРµ С‚СЂРµР±СѓРµС‚СЃСЏ (РЅСѓР¶РµРЅ С‚РѕР»СЊРєРѕ СЂРµС„СЂРµС€ СЃС‚СЂР°РЅРёС†С‹).
-
-## РџРѕР»РµР·РЅРѕРµ
-- РџСѓС‚СЊ РїР°РєРµС‚Р°: `work21-fr` (РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РєР°Рє РїСЂРµС„РёРєСЃ РґР»СЏ РЅР°РІРёРіР°С†РёРё/С„РёС‡/РєРѕРЅС„РёРіР°).
-- Р•СЃР»Рё СЌР»РµРјРµРЅС‚ РЅРµ СЃРєСЂС‹РІР°РµС‚СЃСЏ вЂ” РїСЂРѕРІРµСЂСЊС‚Рµ, С‡С‚Рѕ РІ Р°РґРјРёРЅРєРµ РєР»СЋС‡ Р·Р°РїРёСЃР°РЅ С‚РѕС‡РЅРѕ С‚Р°Рє Р¶Рµ, Р±РµР· РїСЂРѕР±РµР»РѕРІ, Рё Р·РЅР°С‡РµРЅРёРµ `true/false` СЃС‚СЂРѕРєРѕР№.
-
+For details see bro.config.js and src/lib/features.ts
