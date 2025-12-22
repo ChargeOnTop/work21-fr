@@ -11,9 +11,6 @@ export default function ThemeToggle() {
   // Проверяем feature flag для тёмной темы
   const isDarkModeEnabled = isFeatureEnabled('dark_mode');
   
-  // DEBUG
-  console.log('[ThemeToggle] isDarkModeEnabled:', isDarkModeEnabled);
-  
   // Если переключение темы отключено - не показываем кнопку
   if (!isDarkModeEnabled) {
     return null;

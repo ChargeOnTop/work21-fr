@@ -23,7 +23,7 @@ export type FeatureFlag =
 
 const DEFAULT_FEATURES: Record<FeatureFlag, boolean> = {
   ai_estimation: true,
-  dark_mode: false,      // По умолчанию выключено, включается через фичу
+  dark_mode: true,       // По умолчанию включено
   registration: true,
   new_dashboard: false,
   page_login: true,
@@ -62,9 +62,6 @@ export function isFeatureEnabled(feature: FeatureFlag): boolean {
     const featureKey = `features.${feature}`;
     const featureData = features?.[featureKey];
     
-    // DEBUG
-    console.log(`[isFeatureEnabled] feature=${feature}, key=${featureKey}, data=`, featureData);
-    
     if (featureData && typeof featureData === 'object') {
       // Структура: {on: boolean, value: string}
       // value может быть "true" или "false" как строка
@@ -72,22 +69,16 @@ export function isFeatureEnabled(feature: FeatureFlag): boolean {
       
       if (typeof value === 'string') {
         const lower = value.toLowerCase().trim();
-        const result = lower === 'true' || lower === '1' || lower === 'yes' || lower === 'on';
-        console.log(`[isFeatureEnabled] value="${value}" -> result=${result}`);
-        return result;
+        return lower === 'true' || lower === '1' || lower === 'yes' || lower === 'on';
       }
       
       if (typeof value === 'boolean') {
-        console.log(`[isFeatureEnabled] value=${value} (boolean)`);
         return value;
       }
     }
-  } else {
-    console.log('[isFeatureEnabled] broModule not available, using default');
   }
   
   // Дефолтное значение если BroJS недоступен
-  console.log(`[isFeatureEnabled] using default: ${DEFAULT_FEATURES[feature]}`);
   return DEFAULT_FEATURES[feature];
 }
 

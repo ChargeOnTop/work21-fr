@@ -54,7 +54,7 @@ module.exports = {
   features: {
     "work21-fr": {
       "ai_estimation": true,      // AI оценка проектов (GigaChat)
-      "dark_mode": false,         // Кнопка смены темы (по умолчанию скрыта)
+      "dark_mode": true,          // Кнопка смены темы
       "registration": true,       // Регистрация новых пользователей
       "new_dashboard": false,     // Новый дизайн дашборда (A/B тест)
       "page_login": true,         // Страница входа
