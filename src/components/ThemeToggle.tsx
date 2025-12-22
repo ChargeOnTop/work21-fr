@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Sun, Moon } from 'lucide-react';
 import { useTheme } from '@/lib/theme-context';
 import { isFeatureEnabled } from '@/lib/features';
@@ -11,14 +11,8 @@ export default function ThemeToggle() {
   // Проверяем feature flag для тёмной темы
   const isDarkModeEnabled = isFeatureEnabled('dark_mode');
   
-  // Логируем для отладки
-  useEffect(() => {
-    console.log('[ThemeToggle] dark_mode feature enabled:', isDarkModeEnabled);
-  }, [isDarkModeEnabled]);
-  
   // Если переключение темы отключено - не показываем кнопку
   if (!isDarkModeEnabled) {
-    console.log('[ThemeToggle] Hiding button because dark_mode is disabled');
     return null;
   }
 
@@ -36,7 +30,6 @@ export default function ThemeToggle() {
       title={theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'}
     >
       <div className="relative w-5 h-5">
-        {/* Солнце */}
         <Sun 
           className={`absolute inset-0 w-5 h-5 transition-all duration-300 ${
             theme === 'light' 
@@ -44,7 +37,6 @@ export default function ThemeToggle() {
               : 'rotate-90 scale-0 text-gray-400'
           }`}
         />
-        {/* Луна */}
         <Moon 
           className={`absolute inset-0 w-5 h-5 transition-all duration-300 ${
             theme === 'dark' 
@@ -54,7 +46,6 @@ export default function ThemeToggle() {
         />
       </div>
       
-      {/* Подсветка при hover */}
       <div 
         className={`absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
           theme === 'dark' 
