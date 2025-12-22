@@ -5,7 +5,6 @@ import { AlertCircle, CheckCircle2, Loader2, Save, Shield, Star } from 'lucide-r
 import { useAuth } from '@/lib/auth-context';
 import { api, ApiError } from '@/lib/api';
 import { isFeatureEnabled } from '@/lib/features';
-import { PageDisabled } from '@/components';
 
 interface ProfileFormState {
   first_name: string;
@@ -18,15 +17,10 @@ interface ProfileFormState {
 export default function ProfilePage() {
   const { user, refreshUser } = useAuth();
   
-  // Проверяем feature flag для страницы профиля
-  if (!isFeatureEnabled('page_profile')) {
-    return (
-      <PageDisabled
-        title="Профиль недоступен"
-        message="Страница профиля временно отключена. Пожалуйста, попробуйте позже."
-      />
-    );
-  }
+  // Фичи для страницы профиля
+  const showAvatar = isFeatureEnabled('profile_avatar');
+  const showSkills = isFeatureEnabled('profile_skills');
+  const showVerification = isFeatureEnabled('profile_verification');
   
   const [formData, setFormData] = useState<ProfileFormState>({
     first_name: '',

@@ -6,7 +6,6 @@ import { Zap, User, Mail, Lock, ArrowRight, GraduationCap, Building2, AlertTrian
 import { useAuth } from '@/lib/auth-context';
 import { ApiError } from '@/lib/api';
 import { isFeatureEnabled } from '@/lib/features';
-import { PageDisabled } from '@/components';
 
 type UserRole = 'student' | 'customer';
 
@@ -15,17 +14,7 @@ export default function RegisterPage() {
   const [searchParams] = useSearchParams();
   const { register, isLoading } = useAuth();
   
-  // Проверяем feature flag для страницы регистрации
-  if (!isFeatureEnabled('page_register')) {
-    return (
-      <PageDisabled
-        title="Регистрация временно недоступна"
-        message="Страница регистрации временно отключена. Пожалуйста, попробуйте позже."
-      />
-    );
-  }
-  
-  // Проверяем feature flag для формы регистрации (можно показать страницу но без формы)
+  // Фича для формы регистрации
   const isRegistrationEnabled = isFeatureEnabled('registration');
   
   // Получаем роль из URL параметров

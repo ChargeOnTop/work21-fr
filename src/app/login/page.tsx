@@ -6,20 +6,13 @@ import { Zap, Mail, Lock, ArrowRight } from 'lucide-react';
 import { useAuth } from '@/lib/auth-context';
 import { ApiError } from '@/lib/api';
 import { isFeatureEnabled } from '@/lib/features';
-import { PageDisabled } from '@/components';
 
 export default function LoginPage() {
   const { login, isLoading } = useAuth();
   
-  // Проверяем feature flag для страницы входа
-  if (!isFeatureEnabled('page_login')) {
-    return (
-      <PageDisabled
-        title="Вход временно недоступен"
-        message="Страница входа временно отключена. Пожалуйста, попробуйте позже."
-      />
-    );
-  }
+  // Фичи для страницы входа
+  const showForgotPassword = isFeatureEnabled('forgot_password');
+  const showQuickRoleSelect = isFeatureEnabled('quick_role_select');
   
   const [formData, setFormData] = useState({
     email: '',
@@ -136,9 +129,11 @@ export default function LoginPage() {
                 <label className="block text-sm font-medium text-gray-300">
                   Пароль
                 </label>
-                <Link to="/forgot-password" className="text-sm text-accent-green hover:underline">
-                  Забыли пароль?
-                </Link>
+                {showForgotPassword && (
+                  <Link to="/forgot-password" className="text-sm text-accent-green hover:underline">
+                    Забыли пароль?
+                  </Link>
+                )}
               </div>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
@@ -181,21 +176,23 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* Register Links */}
-          <div className="grid grid-cols-2 gap-4">
-            <Link
-              to="/register?role=student"
-              className="py-3 px-4 bg-work21-card hover:bg-work21-border border border-work21-border rounded-lg text-center text-sm text-gray-300 hover:text-white transition-colors"
-            >
-              Я студент
-            </Link>
-            <Link
-              to="/register?role=customer"
-              className="py-3 px-4 bg-work21-card hover:bg-work21-border border border-work21-border rounded-lg text-center text-sm text-gray-300 hover:text-white transition-colors"
-            >
-              Я заказчик
-            </Link>
-          </div>
+          {/* Register Links - Quick Role Select */}
+          {showQuickRoleSelect && (
+            <div className="grid grid-cols-2 gap-4">
+              <Link
+                to="/register?role=student"
+                className="py-3 px-4 bg-work21-card hover:bg-work21-border border border-work21-border rounded-lg text-center text-sm text-gray-300 hover:text-white transition-colors"
+              >
+                Я студент
+              </Link>
+              <Link
+                to="/register?role=customer"
+                className="py-3 px-4 bg-work21-card hover:bg-work21-border border border-work21-border rounded-lg text-center text-sm text-gray-300 hover:text-white transition-colors"
+              >
+                Я заказчик
+              </Link>
+            </div>
+          )}
 
           {/* Register Link */}
           <p className="mt-8 text-center text-gray-400">

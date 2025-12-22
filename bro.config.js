@@ -53,15 +53,31 @@ module.exports = {
   /* Структура: features[pkg.name][featureName] */
   features: {
     "work21-fr": {
-      "ai_estimation": true,      // AI оценка проектов (GigaChat)
-      "dark_mode": true,          // Кнопка смены темы
-      "registration": true,       // Регистрация новых пользователей
-      "new_dashboard": false,     // Новый дизайн дашборда (A/B тест)
-      "page_login": true,         // Страница входа
-      "page_register": true,      // Страница регистрации
-      "page_dashboard": true,     // Страница дашборда
-      "page_projects": true,      // Страница проектов
-      "page_profile": true,       // Страница профиля
+      // Основные
+      "dark_mode": true,              // Кнопка смены темы
+      "registration": true,           // Форма регистрации
+      "ai_estimation": true,          // AI оценка проектов (GigaChat)
+      // Главная
+      "hero_stats": true,             // Статистика на главной
+      "cta_section": true,            // Блок призыва к действию
+      // Login
+      "forgot_password": true,        // Ссылка "Забыли пароль?"
+      "quick_role_select": true,      // Кнопки "Я студент / Я заказчик"
+      // Dashboard
+      "dashboard_stats": true,        // Статистика пользователя
+      "dashboard_recommendations": true, // Рекомендованные проекты
+      "dashboard_quick_actions": true,   // Быстрые действия
+      // Projects
+      "project_tech_stack": true,     // Технологии проекта
+      "project_tasks": true,          // Задачи проекта
+      "project_requirements": true,   // Требования проекта
+      // Profile
+      "profile_avatar": true,         // Аватар пользователя
+      "profile_skills": true,         // Навыки пользователя
+      "profile_verification": true,   // Блок верификации
+      // New Project
+      "project_deadline": true,       // Выбор дедлайна
+      "project_tech_select": true,    // Выбор технологий
     },
   },
   

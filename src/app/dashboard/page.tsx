@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '@/lib/auth-context';
 import { projectsApi, Project } from '@/lib/api';
 import { isFeatureEnabled } from '@/lib/features';
-import { PageDisabled } from '@/components';
 import {
   FolderKanban,
   Users,
@@ -22,30 +21,24 @@ import {
 export default function DashboardPage() {
   const { user } = useAuth();
 
-  // Проверяем feature flag для дашборда
-  if (!isFeatureEnabled('page_dashboard')) {
-    return (
-      <PageDisabled
-        title="Панель управления недоступна"
-        message="Панель управления временно отключена. Пожалуйста, попробуйте позже."
-        showBackButton={false}
-      />
-    );
-  }
-
   if (!user) return null;
+  
+  // Фичи для дашборда
+  const showStats = isFeatureEnabled('dashboard_stats');
+  const showRecommendations = isFeatureEnabled('dashboard_recommendations');
+  const showQuickActions = isFeatureEnabled('dashboard_quick_actions');
 
   // Контент для студента
   if (user.role === 'student') {
-    return <StudentDashboard user={user} />;
+    return <StudentDashboard user={user} showStats={showStats} showRecommendations={showRecommendations} showQuickActions={showQuickActions} />;
   }
 
   // Контент для заказчика
-  return <CustomerDashboard user={user} />;
+  return <CustomerDashboard user={user} showStats={showStats} showRecommendations={showRecommendations} showQuickActions={showQuickActions} />;
 }
 
 // Dashboard для студента
-function StudentDashboard({ user }: { user: any }) {
+function StudentDashboard({ user, showStats, showRecommendations, showQuickActions }: { user: any; showStats: boolean; showRecommendations: boolean; showQuickActions: boolean }) {
   const [projects, setProjects] = useState<Project[]>([]);
   const [myProjects, setMyProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -311,7 +304,7 @@ function StudentDashboard({ user }: { user: any }) {
 }
 
 // Dashboard для заказчика
-function CustomerDashboard({ user }: { user: any }) {
+function CustomerDashboard({ user, showStats, showRecommendations, showQuickActions }: { user: any; showStats: boolean; showRecommendations: boolean; showQuickActions: boolean }) {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 

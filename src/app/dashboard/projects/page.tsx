@@ -5,7 +5,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/lib/auth-context';
 import { projectsApi, Project, ApiError } from '@/lib/api';
 import { isFeatureEnabled } from '@/lib/features';
-import { PageDisabled } from '@/components';
 import {
   FolderKanban,
   Clock,
@@ -37,16 +36,11 @@ export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
-
-  // Проверяем feature flag для страницы проектов
-  if (!isFeatureEnabled('page_projects')) {
-    return (
-      <PageDisabled
-        title="Проекты недоступны"
-        message="Страница проектов временно отключена. Пожалуйста, попробуйте позже."
-      />
-    );
-  }
+  
+  // Фичи для страницы проектов
+  const showTechStack = isFeatureEnabled('project_tech_stack');
+  const showTasks = isFeatureEnabled('project_tasks');
+  const showRequirements = isFeatureEnabled('project_requirements');
 
   const loadProjects = useCallback(async () => {
     if (!user) return;
@@ -261,7 +255,7 @@ export default function ProjectsPage() {
                 </div>
 
                 {/* Requirements */}
-                {project.requirements && (
+                {showRequirements && project.requirements && (
                   <div className="mb-4 p-4 rounded-lg bg-work21-dark/30 border border-work21-border">
                     <div className="text-xs text-gray-500 mb-2">Требования:</div>
                     <p className="text-sm text-gray-300 whitespace-pre-wrap">
@@ -271,7 +265,7 @@ export default function ProjectsPage() {
                 )}
 
                 {/* Tech Stack */}
-                {techStack.length > 0 && (
+                {showTechStack && techStack.length > 0 && (
                   <div className="mb-4">
                     <div className="text-xs text-gray-500 mb-2 flex items-center gap-2">
                       <Tag className="w-4 h-4" />
@@ -291,7 +285,7 @@ export default function ProjectsPage() {
                 )}
 
                 {/* Tasks List */}
-                {project.tasks && project.tasks.length > 0 && (
+                {showTasks && project.tasks && project.tasks.length > 0 && (
                   <div className="mb-4">
                     <div className="text-xs text-gray-500 mb-2">Задачи проекта:</div>
                     <div className="space-y-2">
