@@ -173,8 +173,9 @@ html:not(.dark) { /* светлая тема */ }
 
 ## Связанные сервисы
 
-- **Backend:** https://github.com/ChargeOnTop/work21-backend
-- **AI Agent:** https://github.com/ChargeOnTop/work21-agent
+- **Backend:** https://github.com/oinuritto/work21-backend
+- **AI Agent:** https://github.com/Daimnedope/work21-agents
+- **Admin Panel:** https://github.com/Daimnedope/work21-admins
 - **Deploy:** https://github.com/ChargeOnTop/work21-deploy
 
 ## Production
